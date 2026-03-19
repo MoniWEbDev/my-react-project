@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
+import { Menu, X, Recycle } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  return (
+    <header className="navbar">
+      <Link to="/" className="nav-brand" onClick={closeMenu}>
+        <Recycle size={28} color="var(--primary-dark)" />
+        KachraBeche
+      </Link>
+
+      <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+        <li>
+          <NavLink to="/" className="nav-link" onClick={closeMenu}>
+            {t('home')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/about" className="nav-link" onClick={closeMenu}>
+            {t('about')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/income-source" className="nav-link" onClick={closeMenu}>
+            {t('incomeSource')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/gift" className="nav-link" onClick={closeMenu}>
+            {t('gift')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/skill" className="nav-link" onClick={closeMenu}>
+            {t('skill')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/contact" className="nav-link" onClick={closeMenu}>
+            {t('contact')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile" className="nav-link" onClick={closeMenu}>
+            {t('profile')}
+          </NavLink>
+        </li>
+        <li style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+          <select 
+            className="lang-select"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            style={{ 
+              border: '2px solid var(--primary)', 
+              borderRadius: '20px', 
+              padding: '6px 12px', 
+              background: 'var(--bg-light)',
+              color: 'var(--text-dark)',
+              fontFamily: 'inherit',
+              fontWeight: '600',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              outline: 'none',
+              transition: 'var(--transition)'
+            }}
+          >
+            <option value="en">English (EN)</option>
+            <option value="hi">हिंदी (HI)</option>
+            <option value="mr">मराठी (MR)</option>
+            <option value="ur">اردو (UR)</option>
+            <option value="bn">বাংলা (BN)</option>
+          </select>
+        </li>
+      </ul>
+
+      <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle menu">
+        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+    </header>
+  );
+};
+
+export default Navbar;
