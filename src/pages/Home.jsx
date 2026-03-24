@@ -1,133 +1,81 @@
-import React, { useState, useRef } from 'react';
-import { Camera, Youtube } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { motion as Motion } from 'framer-motion'
+import { ArrowRight, Leaf, Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Home = () => {
-  const [photoPreview, setPhotoPreview] = useState(null);
-  const [showYoutubeModal, setShowYoutubeModal] = useState(false);
-  const fileInputRef = useRef(null);
-  
-  const { t } = useLanguage();
+  const { t } = useTranslation()
 
-  const categories = [
-    { id: 1, label: t('chappal'), image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&q=80' },
-    { id: 2, label: t('bartan'), image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=500&q=80' },
-    { id: 3, label: t('kapde'), image: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500&q=80' }
-  ];
-
-  const handleCaptureClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPhotoPreview(imageUrl);
-    }
-  };
+  const highlights = [
+    t('home.highlight1'),
+    t('home.highlight2'),
+    t('home.highlight3'),
+  ]
 
   return (
-    <>
-      <section className="split-hero">
-        
-        {/* Left Side: Elaborate visually-styled text that mimics the provided image */}
-        <div className="hero-left">
-          <div className="promo-content">
-            <h1 className="hindi-title-main">{t('mainHeadline')}</h1>
-            <div className="hindi-title-sub">{t('subHeadline')}</div>
-            <div className="ribbon">
-              <h2 className="hindi-title-gift">{t('ribbonText')}</h2>
+    <div className="px-4 pb-20 pt-6 sm:px-6 lg:px-8">
+      <section className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-emerald-200/80 bg-linear-to-br from-emerald-100 via-white to-teal-100 px-6 py-14 shadow-2xl shadow-emerald-900/10 dark:border-emerald-900 dark:from-emerald-950 dark:via-slate-950 dark:to-teal-950 md:px-10">
+        <div className="pointer-events-none absolute -left-10 top-16 h-40 w-40 rounded-full bg-emerald-300/30 blur-3xl dark:bg-emerald-700/20" />
+        <div className="pointer-events-none absolute -right-10 top-4 h-52 w-52 rounded-full bg-teal-300/30 blur-3xl dark:bg-teal-700/20" />
+
+        <div className="relative grid items-center gap-10 lg:grid-cols-2">
+          <Motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/70 bg-white/70 px-3 py-1 text-xs font-semibold text-emerald-700 backdrop-blur-sm dark:border-emerald-700 dark:bg-slate-900/60 dark:text-emerald-300">
+              <Leaf size={14} />
+              {t('home.badge')}
             </div>
-            
-            <h3 className="english-title" style={{ whiteSpace: 'pre-line' }}>{t('englishSubHeadline')}</h3>
-          </div>
-
-          <div className="hero-buttons">
-            <input 
-              type="file" 
-              accept="image/*" 
-              capture="environment" 
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-            
-            <button className="btn-pill btn-yellow" onClick={handleCaptureClick}>
-              <Camera size={15} />
-              {t('capturePhoto')}
-            </button>
-            <button className="btn-pill btn-white" onClick={() => setShowYoutubeModal(true)}>
-              <Youtube size={15} color="#D97706" />
-              <span style={{ color: '#D97706' }}>{t('watchVideo')}</span>
-            </button>
-          </div>
-
-          {photoPreview && (
-            <div className="photo-preview" style={{ margin: '0 auto', zIndex: 3 }}>
-              <img src={photoPreview} alt="Captured Scrap" style={{ borderRadius: '1px', width: '200px' }}/>
-              <p style={{ background: 'rgba(0,0,0,0.6)', color: 'white', textAlign: 'center' }}>{t('uploadedPhoto')}</p>
+            <h1 className="text-4xl font-bold leading-tight text-slate-900 dark:text-slate-50 sm:text-5xl">
+              {t('home.title1')}
+              <span className="block text-emerald-600 dark:text-emerald-300">{t('home.title2')}</span>
+            </h1>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+              {t('home.subtitle')}
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                to="/waste"
+                className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition hover:scale-[1.02]"
+              >
+                {t('home.start')}
+                <ArrowRight size={16} />
+              </Link>
+              <Link
+                to="/dashboard"
+                className="rounded-xl border border-emerald-300/70 bg-white/70 px-5 py-3 text-sm font-semibold text-emerald-700 backdrop-blur-sm transition hover:bg-emerald-50 dark:border-emerald-800 dark:bg-slate-900/70 dark:text-emerald-300"
+              >
+                {t('home.viewDashboard')}
+              </Link>
             </div>
-          )}
-        </div>
+          </Motion.div>
 
-        {/* Right Side: Video Container */}
-        <div className="hero-video-container" style={{ position: 'relative', width: '90%', height: '60%', minHeight: '300px', borderRadius: '0 0 0 0px', overflow: 'hidden', boxShadow: '-10px 0 20px rgba(0,0,0,0.2)', marginTop: '10px'  }}>
-          <video 
-            className="hero-video" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            poster="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1000&q=80"
+          <Motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="rounded-2xl border border-white/60 bg-white/60 p-6 shadow-xl backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/70"
           >
-            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          {/* <div className="play-button-overlay">
-            <Youtube size={40} />
-          </div> */}
+            <h2 className="mb-4 inline-flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+              <Sparkles size={18} className="text-emerald-500" />
+              {t('home.why')}
+            </h2>
+            <div className="space-y-3">
+              {highlights.map((item, index) => (
+                <Motion.div
+                  key={item}
+                  initial={{ opacity: 0, x: 14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
+                  className="rounded-xl bg-emerald-50/80 px-4 py-3 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                >
+                  {item}
+                </Motion.div>
+              ))}
+            </div>
+          </Motion.div>
         </div>
       </section>
+    </div>
+  )
+}
 
-      {/* Yellow Poster Section */}
-      <section className="poster-section">
-        <h2 className="poster-title">{t('whatWeAccept')}</h2>
-        <div className="category-grid">
-          {categories.map(cat => (
-            <div key={cat.id} className="category-card">
-              <div className="card-img-wrapper">
-                <img src={cat.image} alt={cat.label} />
-                <div className="card-overlay"></div>
-                <h3 style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>{cat.label}</h3>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* YouTube Modal */}
-      {showYoutubeModal && (
-        <div className="modal-overlay" onClick={() => setShowYoutubeModal(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="modal-close" onClick={() => setShowYoutubeModal(false)}>X</div>
-            <div className="video-wrapper">
-              <iframe 
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
-                title="YouTube video player" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-
-export default Home;
+export default Home

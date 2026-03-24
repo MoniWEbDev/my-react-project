@@ -1,39 +1,42 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import IncomeSource from './pages/IncomeSource';
-import Gift from './pages/Gift';
-import Skill from './pages/Skill';
-import Contact from './pages/Contact';
-import Profile from './pages/Profile';
-import { LanguageProvider } from './contexts/LanguageContext';
-import './App.css';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Home from './pages/Home'
+import WasteInput from './pages/WasteInput'
+import Gift from './pages/Gift'
+import Dashboard from './pages/Dashboard'
+import { RecyclingProvider } from './contexts/RecyclingContext'
+import { LearningProvider } from './contexts/LearningContext'
+import LearningHub from './pages/LearningHub'
+import { AppProvider } from './contexts/AppContext'
+import CommunityHub from './pages/CommunityHub'
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <div className="page-container">
-          <Navbar />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/income-source" element={<IncomeSource />} />
-              <Route path="/gift" element={<Gift />} />
-              <Route path="/skill" element={<Skill />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </LanguageProvider>
-  );
+    <AppProvider>
+      <RecyclingProvider>
+        <LearningProvider>
+          <Router>
+            <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+              <Navbar />
+              <main className="pt-20">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/waste" element={<WasteInput />} />
+                  <Route path="/gifts" element={<Gift />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/learning" element={<LearningHub />} />
+                  <Route path="/community" element={<CommunityHub />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </LearningProvider>
+      </RecyclingProvider>
+    </AppProvider>
+  )
 }
 
-export default App;
+export default App

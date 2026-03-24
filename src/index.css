@@ -1,87 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --primary: #FFB300; /* Yellow styling as requested for poster section */
-  --primary-dark: #F57F17;
-  --secondary: #111827; 
-  --text-dark: #1F2937;
-  --text-light: #6B7280;
-  --bg-light: #F9FAFB;
-  --white: #FFFFFF;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  color-scheme: light;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.dark {
+  color-scheme: dark;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  color: var(--text-dark);
-  background-color: var(--bg-light);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  font-family: 'Inter', sans-serif;
-}
-
-/* Page Container */
-.page-container {
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
   min-height: 100vh;
 }
 
-main {
-  flex: 1;
-  padding-top: 70px; /* Space for fixed navbar */
-}
-
-/* Common Section Styles */
-.section {
-  padding: 80px 5%;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 40px;
-  color: var(--secondary);
-}
-
-.placeholder-page {
-  padding: 100px 5%;
-  text-align: center;
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.placeholder-page h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: var(--secondary);
-}
-
-.placeholder-page p {
-  font-size: 1.2rem;
-  color: var(--text-light);
-  max-width: 600px;
+* {
+  box-sizing: border-box;
 }
