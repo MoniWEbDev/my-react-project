@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, Recycle } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import logoImg from '../assets/kachra-logo.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,8 +14,7 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <Link to="/" className="nav-brand" onClick={closeMenu}>
-        <Recycle size={28} color="var(--primary-dark)" />
-        KachraBeche
+        <img src={logoImg} alt="KachraBeche Logo" style={{ height: '125px', objectFit: 'contain' }} />
       </Link>
 
       <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
