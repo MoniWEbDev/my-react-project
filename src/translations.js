@@ -3,7 +3,7 @@ export const translations = {
     // Navbar
     home: "Home",
     about: "About",
-    incomeSource: "Income Source",
+    incomeSource: "Waste Input",
     gift: "Gift",
     skill: "Skill",
     contact: "Contact",
@@ -29,7 +29,7 @@ export const translations = {
     errInvalidLogin: "Invalid username or password",
     loginGoogle: "Login with Google",
     bannerTitle: "Our Green Mission",
-    bannerDesc: "We are committed to making India cleaner and greener by providing smart recycling solutions for every household and business. Join us in our journey towards a sustainable future! 🌿",
+    bannerDesc: "We are committed to making India cleaner and more sustainable by providing smart recycling solutions for every household and business. From doorstep scrap pickup and responsible waste segregation to awareness, rewards, and circular reuse, our mission is to reduce landfill waste, conserve natural resources, and build eco-friendly communities. Join us in creating a cleaner, healthier, and more responsible future for the next generation. 🌿",
     
     // Footer
     footerTagline: "Transforming waste management with smart solutions. Sell your scrap items easily and get amazing gifts and rewards in return.",

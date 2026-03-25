@@ -27,7 +27,7 @@
 .footer-company-name {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary, #10b981);
+  color: var(--primary, #fbbf24);
   margin: 0 0 12px 0;
 }
 
@@ -42,7 +42,7 @@
 .footer-subheading {
   font-size: 14px;
   font-weight: 700;
-  color: var(--primary, #10b981);
+  color: var(--primary, #fbbf24);
   margin: 15px 0 8px 0;
 }
 
@@ -56,10 +56,10 @@
 .footer-heading {
   font-size: 16px;
   font-weight: 700;
-  color: var(--primary, #10b981);
+  color: var(--primary, #fbbf24);
   margin: 0 0 15px 0;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--primary, #10b981);
+  border-bottom: 2px solid var(--primary, #fbbf24);
 }
 
 .footer-links {
@@ -80,7 +80,7 @@
 }
 
 .footer-links a:hover {
-  color: var(--primary, #10b981);
+  color: var(--primary, #fbbf24);
 }
 
 /* Social Icons - Yellow */
@@ -133,8 +133,8 @@
 }
 
 .btn-primary:hover {
-  background-color: var(--primary, #10b981);
-  border-color: var(--primary, #10b981);
+  background-color: var(--primary, #fbbf24);
+  border-color: var(--primary, #fbbf24);
 }
 
 .btn-secondary {
