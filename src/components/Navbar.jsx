@@ -19,37 +19,37 @@ const Navbar = () => {
 
       <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <li>
-          <NavLink to="/" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('home')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/about" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('about')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/income-source" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/income-source" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('incomeSource')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/gift" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/gift" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('gift')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/skill" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/skill" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('skill')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/contact" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('contact')}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/profile" className="nav-link" onClick={closeMenu}>
+          <NavLink to="/profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
             {t('profile')}
           </NavLink>
         </li>
