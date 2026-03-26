@@ -82,6 +82,17 @@ export default function Home() {
 
   return (
     <div className="home-container">
+      <section className="home-hero-video-section">
+        <video
+          className="home-hero-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="/home-hero-video.mp4"
+        />
+      </section>
+
       <div className="home-page">
         <section className="welcome-hero-card">
           <div className="welcome-main">

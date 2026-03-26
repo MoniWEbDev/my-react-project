@@ -13,6 +13,9 @@ const IncomeSource = () => {
   ]);
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [newEntryAdded, setNewEntryAdded] = useState(false);
   const [pickupInfo, setPickupInfo] = useState({
     fullName: '',
     phone: '',
@@ -21,7 +24,6 @@ const IncomeSource = () => {
     pinCode: '',
     block: '',
     village: '',
-    landmark: '',
   });
 
   const totalSubmitted = useMemo(
@@ -40,42 +42,50 @@ const IncomeSource = () => {
 
     if (isAnyRequiredMissing) {
       setError('Please fill all required fields before submitting.');
+      setSuccess('');
       window.alert('Please fill this: complete all required fields.');
       return;
     }
 
     if (!pickupInfo.fullName.trim()) {
       setError('Please enter full name.');
+      setSuccess('');
       return;
     }
 
     if (!phonePattern.test(pickupInfo.phone.trim())) {
       setError('Please enter a valid 10-digit phone number.');
+      setSuccess('');
       return;
     }
 
     if (pickupInfo.phone.trim() !== pickupInfo.confirmPhone.trim()) {
       setError('Phone number and confirm phone number must match.');
+      setSuccess('');
       return;
     }
 
     if (!pickupInfo.address.trim()) {
       setError('Please enter address.');
+      setSuccess('');
       return;
     }
 
     if (!/^\d{6}$/.test(pickupInfo.pinCode.trim())) {
       setError('Please enter a valid 6-digit PIN code.');
+      setSuccess('');
       return;
     }
 
     if (!pickupInfo.block.trim() || !pickupInfo.village.trim()) {
       setError('Please enter both block and village details.');
+      setSuccess('');
       return;
     }
 
     if (!parsedWeight || parsedWeight <= 0) {
       setError('Please enter a valid weight greater than 0.');
+      setSuccess('');
       window.alert('Please fill this: enter a valid weight.');
       return;
     }
@@ -86,6 +96,12 @@ const IncomeSource = () => {
     ]);
     setWeight('');
     setError('');
+    setSuccess('Form submitted successfully. Your waste pickup details have been saved.');
+    setShowSuccess(true);
+    setNewEntryAdded(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+    setTimeout(() => setNewEntryAdded(false), 600);
+    window.alert('Successfully submitted. Your waste pickup details have been saved.');
   };
 
   const handlePickupInputChange = (event) => {
@@ -94,6 +110,7 @@ const IncomeSource = () => {
       ...prev,
       [name]: value,
     }));
+    setSuccess('');
   };
 
   const handlePhotoUpload = (event) => {
@@ -115,12 +132,13 @@ const IncomeSource = () => {
 
     setUploadedPhotos((prev) => [...photoItems, ...prev].slice(0, 8));
     setError('');
+    setSuccess('');
     event.target.value = '';
   };
 
   return (
     <section className="waste-page">
-      <div className="waste-input-card">
+      <div className="waste-input-card animate-fade-in">
         <h1>Waste Input</h1>
         <p>
           Add household waste manually or upload photos from your phone gallery or camera.
@@ -225,14 +243,6 @@ const IncomeSource = () => {
               className="waste-control"
               required
             />
-            <input
-              type="text"
-              name="landmark"
-              placeholder="Landmark (optional)"
-              value={pickupInfo.landmark}
-              onChange={handlePickupInputChange}
-              className="waste-control"
-            />
             <textarea
               name="address"
               rows="3"
@@ -262,14 +272,15 @@ const IncomeSource = () => {
           <span className="total-weight">Total submitted: {totalSubmitted.toFixed(1)} kg</span>
         </div>
 
-        {error && <p className="waste-error">{error}</p>}
+        {error && <p className="waste-error animate-shake">{error}</p>}
+        {success && <p className={`waste-success ${showSuccess ? 'animate-bounce-in' : 'animate-bounce-out'}`}>{success}</p>}
 
         {uploadedPhotos.length > 0 && (
-          <div className="uploaded-photos">
+          <div className="uploaded-photos animate-scale-in">
             <h3>Uploaded Photos</h3>
             <div className="photo-grid">
-              {uploadedPhotos.map((photo) => (
-                <figure key={photo.id} className="photo-item">
+              {uploadedPhotos.map((photo, index) => (
+                <figure key={photo.id} className="photo-item animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
                   <img src={photo.previewUrl} alt={photo.name} />
                   <figcaption>{photo.name}</figcaption>
                 </figure>
@@ -280,11 +291,11 @@ const IncomeSource = () => {
       </div>
 
       <div className="waste-grid">
-        <div className="recent-entries-card">
+        <div className="recent-entries-card animate-slide-in-right">
           <h2>Recent Entries</h2>
           <ul>
-            {entries.slice(0, 3).map((item) => (
-              <li key={item.id}>
+            {entries.slice(0, 3).map((item, index) => (
+              <li key={item.id} className={`animate-slide-in-left ${newEntryAdded && index === 0 ? 'highlight-new' : ''}`} style={{ animationDelay: `${index * 80}ms` }}>
                 <span>{item.type}</span>
                 <strong>{item.weight} kg</strong>
               </li>
@@ -292,7 +303,7 @@ const IncomeSource = () => {
           </ul>
         </div>
 
-        <div className="rewards-card">
+        <div className="rewards-card animate-slide-in-left">
           <h2>Ready to unlock rewards?</h2>
           <p>
             Your rewards are dynamically calculated based on your total recycled weight.

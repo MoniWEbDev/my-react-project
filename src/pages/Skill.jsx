@@ -7,6 +7,15 @@ const Skill = () => {
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [levelFilter, setLevelFilter] = useState('All');
 
+  const summary = {
+    totalSkills: 101,
+    overallProgress: '1%',
+    skillsCompleted: '1',
+    certificates: '1',
+    points: '270',
+    currentSkill: 'Crop Cultivation',
+  };
+
   const skills = [
     {
       id: 1,
@@ -74,44 +83,74 @@ const Skill = () => {
       modules: 6,
       status: 'Not started',
     },
+    {
+      id: 7,
+      title: 'Water Saving Methods',
+      category: 'Agriculture',
+      level: 'Advanced',
+      description: 'Master farm-level water conservation through practical planning and field tasks.',
+      image: 'https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=400&h=240&fit=crop',
+      progress: 0,
+      modules: 4,
+      status: 'Not started',
+    },
+    {
+      id: 8,
+      title: 'Rural Compost Economics',
+      category: 'Waste Management',
+      level: 'Intermediate',
+      description: 'Learn how composting can generate village income with realistic case studies.',
+      image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&h=240&fit=crop',
+      progress: 0,
+      modules: 5,
+      status: 'Not started',
+    },
   ];
 
   const stats = [
-    { label: 'Overall Progress', value: '1%' },
-    { label: 'Skills Completed', value: '1' },
-    { label: 'Certificates', value: '1' },
-    { label: 'Points', value: '270' },
+    { label: 'Overall Progress', value: summary.overallProgress },
+    { label: 'Skills Completed', value: summary.skillsCompleted },
+    { label: 'Certificates', value: summary.certificates },
+    { label: 'Points', value: summary.points },
   ];
+
+  const filteredSkills = skills.filter((skill) => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      query.length === 0 ||
+      skill.title.toLowerCase().includes(query) ||
+      skill.description.toLowerCase().includes(query);
+    const matchesCategory = categoryFilter === 'All' || skill.category === categoryFilter;
+    const matchesLevel = levelFilter === 'All' || skill.level === levelFilter;
+    return matchesSearch && matchesCategory && matchesLevel;
+  });
 
   return (
     <section className="skill-page">
-      {/* Header Section */}
       <div className="skill-header">
-        <h1>101 Skills Learning Hub</h1>
+        <h1>{summary.totalSkills} Skills Learning Hub</h1>
         <p>Explore all 101 skills with structured videos, adaptive testing, and practical assignments.</p>
 
-        {/* Stats Grid */}
         <div className="skill-stats">
           {stats.map((stat, idx) => (
             <div key={idx} className="stat-item">
               <span className="stat-label">{stat.label}</span>
-              <span className="stat-value">{stat.value}</span>
+              <div className="stat-track">
+                <span className="stat-value">{stat.value}</span>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Continue Learning Button */}
         <button className="continue-learning-btn">
-          Continue Learning: Crop Cultivation
+          Continue Learning: {summary.currentSkill}
         </button>
       </div>
 
-      {/* Explore Skills Section */}
       <div className="explore-skills">
         <h2>Explore Skills</h2>
 
         <div className="skill-controls">
-          {/* Search Bar */}
           <div className="search-container">
             <Search size={18} className="search-icon" />
             <input
@@ -123,7 +162,6 @@ const Skill = () => {
             />
           </div>
 
-          {/* Filters and Voice Search */}
           <div className="skill-filters">
             <select
               value={categoryFilter}
@@ -152,9 +190,8 @@ const Skill = () => {
           </div>
         </div>
 
-        {/* Skills Grid */}
         <div className="skill-grid">
-          {skills.map((skill) => (
+          {filteredSkills.map((skill) => (
             <div key={skill.id} className="skill-card">
               <div className="skill-image-container">
                 <img src={skill.image} alt={skill.title} className="skill-image" />
@@ -167,7 +204,6 @@ const Skill = () => {
                 </p>
                 <p className="skill-description">{skill.description}</p>
 
-                {/* Progress Bar */}
                 <div className="progress-section">
                   <div className="progress-header">
                     <span className="progress-label">Skill progress</span>
@@ -181,17 +217,21 @@ const Skill = () => {
                   </div>
                 </div>
 
-                {/* Modules Info */}
                 <div className="skill-info">
                   <span className="module-count">▦ {skill.modules} modules</span>
                   <span className="module-status">◉ {skill.status}</span>
                 </div>
 
-                {/* Open Skill Button */}
                 <button className="open-skill-btn">Open Skill</button>
               </div>
             </div>
           ))}
+
+          {filteredSkills.length === 0 ? (
+            <div className="skill-empty-state">
+              <p>No skills match your current search or filters.</p>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

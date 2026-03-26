@@ -17,6 +17,9 @@ const Profile = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -30,7 +33,7 @@ const Profile = () => {
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!formData.name.trim() || !formData.email.trim() || !formData.password.trim()) {
@@ -59,8 +62,45 @@ const Profile = () => {
       }
     }
 
-    setError('');
-    setMessage(mode === 'login' ? 'Login successful.' : 'Signup successful.');
+    try {
+      setIsSubmitting(true);
+      setError('');
+      setMessage('');
+
+      const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/signup';
+      const payload =
+        mode === 'login'
+          ? {
+              email: formData.email.trim(),
+              password: formData.password,
+            }
+          : {
+              name: formData.name.trim(),
+              email: formData.email.trim(),
+              password: formData.password,
+            };
+
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data?.message || 'Request failed. Please try again.');
+        return;
+      }
+
+      setMessage(data?.message || (mode === 'login' ? 'Login successful.' : 'Signup successful.'));
+    } catch {
+      setError('Could not connect to server. Please make sure backend is running.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleModeChange = (nextMode) => {
@@ -204,8 +244,8 @@ const Profile = () => {
             </div>
           )}
 
-          <button type="submit" className="auth-submit-btn">
-            {mode === 'login' ? 'Login' : 'Signup'}
+          <button type="submit" className="auth-submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Please wait...' : mode === 'login' ? 'Login' : 'Signup'}
           </button>
         </form>
 
