@@ -12,6 +12,28 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --nav-hover-bg: #fff5e8;
+  --nav-active-bg: #fffbeb;
+  --nav-active-border: #fcd34d;
+  --nav-active-text: #92400e;
+  --toggle-bg: #fffaf0;
+  --toggle-text: #7c4608;
+}
+
+:root[data-theme='dark'] {
+  --secondary: #e5e7eb;
+  --text-dark: #f3f4f6;
+  --text-light: #9ca3af;
+  --bg-light: #0f172a;
+  --white: #111827;
+  --navbar-bg: rgba(17, 24, 39, 0.92);
+  --nav-hover-bg: rgba(255, 179, 0, 0.14);
+  --nav-active-bg: rgba(255, 179, 0, 0.2);
+  --nav-active-border: #f59e0b;
+  --nav-active-text: #fcd34d;
+  --toggle-bg: #1f2937;
+  --toggle-text: #f3f4f6;
 }
 
 * {
@@ -26,6 +48,7 @@ body {
   background-color: var(--bg-light);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 a {

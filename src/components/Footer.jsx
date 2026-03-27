@@ -4,7 +4,9 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './Footer.css';
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const isEnglish = language === 'en';
+  const cities = isEnglish ? ['Delhi', 'Mumbai', 'Bangalore'] : ['दिल्ली', 'मुंबई', 'बेंगलुरु'];
 
   return (
     <footer className="footer">
@@ -21,11 +23,11 @@ const Footer = () => {
           
           <h4 className="footer-subheading">{t('followUs')}</h4>
           <div className="footer-socials">
-            <a href="#" className="social-icon" aria-label="Facebook"><Facebook size={20} /></a>
-            <a href="#" className="social-icon" aria-label="Twitter"><Twitter size={20} /></a>
-            <a href="#" className="social-icon" aria-label="LinkedIn"><Linkedin size={20} /></a>
-            <a href="#" className="social-icon" aria-label="Instagram"><Instagram size={20} /></a>
-            <a href="#" className="social-icon" aria-label="YouTube"><Youtube size={20} /></a>
+            <a href="#" className="social-icon" aria-label={isEnglish ? 'Facebook' : 'फेसबुक'}><Facebook size={20} /></a>
+            <a href="#" className="social-icon" aria-label={isEnglish ? 'Twitter' : 'ट्विटर'}><Twitter size={20} /></a>
+            <a href="#" className="social-icon" aria-label={isEnglish ? 'LinkedIn' : 'लिंक्डइन'}><Linkedin size={20} /></a>
+            <a href="#" className="social-icon" aria-label={isEnglish ? 'Instagram' : 'इंस्टाग्राम'}><Instagram size={20} /></a>
+            <a href="#" className="social-icon" aria-label={isEnglish ? 'YouTube' : 'यूट्यूब'}><Youtube size={20} /></a>
           </div>
         </div>
 
@@ -56,9 +58,9 @@ const Footer = () => {
         <div className="footer-col">
           <h3 className="footer-heading">{t('locationsLabel')}</h3>
           <ul className="footer-links">
-            <li><a href="#delhi">📍 Delhi</a></li>
-            <li><a href="#mumbai">📍 Mumbai</a></li>
-            <li><a href="#bangalore">📍 Bangalore</a></li>
+            <li><a href="#delhi">📍 {cities[0]}</a></li>
+            <li><a href="#mumbai">📍 {cities[1]}</a></li>
+            <li><a href="#bangalore">📍 {cities[2]}</a></li>
           </ul>
         </div>
 

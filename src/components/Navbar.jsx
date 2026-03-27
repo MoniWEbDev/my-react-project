@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Moon, Sun, Recycle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import logoImg from '../assets/kachra-logo.png';
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const brandByLanguage = {
+    en: 'KachraBeche',
+    hi: 'कचरा बेचें',
+    mr: 'कचरा विक्री',
+    ur: 'کچرا بیچیں',
+    bn: 'আবর্জনা বেচুন',
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
@@ -14,7 +20,10 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <Link to="/" className="nav-brand" onClick={closeMenu}>
-        <img src={logoImg} alt="KachraBeche Logo" style={{ height: '125px', objectFit: 'contain' }} />
+        <span className="nav-brand-icon" aria-hidden="true">
+          <Recycle size={20} />
+        </span>
+        <span className="nav-brand-text">{brandByLanguage[language] || brandByLanguage.en}</span>
       </Link>
 
       <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
@@ -30,17 +39,17 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink to="/income-source" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-            {t('incomeSource')}
+            {t('yourContribution')}
           </NavLink>
         </li>
         <li>
           <NavLink to="/gift" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-            {t('gift')}
+            {t('incentives')}
           </NavLink>
         </li>
         <li>
           <NavLink to="/skill" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
-            {t('skill')}
+            {t('learningHub')}
           </NavLink>
         </li>
         <li>
@@ -79,9 +88,21 @@ const Navbar = () => {
             <option value="bn">বাংলা (BN)</option>
           </select>
         </li>
+        <li>
+          <button
+            type="button"
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label={theme === 'light' ? `Switch to ${t('darkMode')} mode` : `Switch to ${t('lightMode')} mode`}
+            title={theme === 'light' ? `Switch to ${t('darkMode')} mode` : `Switch to ${t('lightMode')} mode`}
+          >
+            {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            {theme === 'light' ? t('darkMode') : t('lightMode')}
+          </button>
+        </li>
       </ul>
 
-      <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle menu">
+      <button className="mobile-menu-btn" onClick={toggleMenu} aria-label={language === 'en' ? 'Toggle menu' : 'मेन्यू बदलें'}>
         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
     </header>

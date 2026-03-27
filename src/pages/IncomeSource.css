@@ -7,12 +7,323 @@
   gap: 24px;
 }
 
+.waste-truck-banner {
+  border-radius: 20px;
+  border: 1px solid #bbf7d0;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(187, 247, 208, 0.5), transparent 38%),
+    linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 18px;
+  align-items: center;
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.15);
+}
+
+.waste-truck-content h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  color: #14532d;
+}
+
+.waste-truck-content p {
+  margin: 0;
+  color: #2f4b3c;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.truck-cta-btn {
+  margin-top: 12px;
+  border: 1px solid #16a34a;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #f0fff4;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.24);
+}
+
+.truck-scene {
+  position: relative;
+  height: 170px;
+  border-radius: 14px;
+  border: 1px solid #a7f3d0;
+  background: linear-gradient(180deg, #ecfdf5 0%, #d9fbe9 54%, #b7f4d2 100%);
+  overflow: hidden;
+}
+
+.scene-glow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.28) 0%, transparent 68%);
+  right: -20px;
+  top: -46px;
+}
+
+.truck-motion {
+  position: absolute;
+  left: -24px;
+  bottom: 28px;
+  animation: truckDriveLoop 9.5s linear infinite;
+}
+
+.truck-body {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  animation: truckSuspension 0.9s ease-in-out infinite;
+}
+
+.truck-top-box {
+  position: absolute;
+  right: 10px;
+  top: -16px;
+  width: 84px;
+  height: 24px;
+  border-radius: 8px;
+  border: 2px solid #166534;
+  background: linear-gradient(135deg, #4ade80, #16a34a);
+}
+
+.truck-container {
+  width: 144px;
+  height: 58px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: 2px solid #166534;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.truck-cabin {
+  width: 62px;
+  height: 42px;
+  margin-right: 6px;
+  border-radius: 10px 10px 6px 6px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: 2px solid #166534;
+  position: relative;
+}
+
+.truck-cabin::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 9px;
+  width: 33px;
+  height: 16px;
+  border-radius: 4px;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+.truck-leaf {
+  color: #ecfdf5;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.truck-intake {
+  position: absolute;
+  right: -8px;
+  top: 22px;
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+  background: #166534;
+}
+
+.truck-wheel {
+  position: absolute;
+  bottom: -14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1f2937;
+  border: 4px solid #d1d5db;
+  animation: wheelSpin 1s linear infinite;
+}
+
+.truck-wheel-left {
+  left: 40px;
+}
+
+.truck-wheel-right {
+  right: 20px;
+}
+
+.truck-bins {
+  position: absolute;
+  right: 18px;
+  bottom: 30px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.waste-stream {
+  position: absolute;
+  left: 78px;
+  bottom: 74px;
+  width: 100px;
+  height: 8px;
+  pointer-events: none;
+}
+
+.waste-stream::before,
+.waste-stream::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: collectToTruck 2.8s linear infinite;
+}
+
+.waste-stream::after {
+  background: #16a34a;
+  animation-delay: 1.3s;
+}
+
+.dust-trail {
+  position: absolute;
+  left: 14px;
+  bottom: 36px;
+  display: flex;
+  gap: 6px;
+}
+
+.dust-trail span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(21, 128, 61, 0.28);
+  animation: dustFade 1.6s ease-in-out infinite;
+}
+
+.dust-trail span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dust-trail span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.truck-bin {
+  position: relative;
+  border-radius: 8px;
+  border: 2px solid #166534;
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  box-shadow: 0 8px 14px rgba(12, 74, 31, 0.22);
+}
+
+.truck-bin::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -8px;
+  width: 78%;
+  height: 8px;
+  border-radius: 4px;
+  background: #14532d;
+}
+
+.bin-large {
+  width: 50px;
+  height: 46px;
+}
+
+.bin-medium {
+  width: 40px;
+  height: 36px;
+}
+
+.road-line {
+  position: absolute;
+  left: -80%;
+  width: 240%;
+  bottom: 14px;
+  height: 8px;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(21, 101, 52, 0.55) 0 32px,
+    rgba(21, 101, 52, 0.1) 32px 58px
+  );
+  animation: roadScroll 1.4s linear infinite;
+}
+
+@keyframes truckDriveLoop {
+  0% { transform: translateX(-20px); }
+  45% { transform: translateX(88px); }
+  55% { transform: translateX(88px); }
+  100% { transform: translateX(-20px); }
+}
+
+@keyframes truckSuspension {
+  0%,
+  100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes wheelSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes collectToTruck {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0;
+  }
+  15% { opacity: 1; }
+  80% { opacity: 1; }
+  100% {
+    transform: translateX(96px) translateY(-30px) scale(0.35);
+    opacity: 0;
+  }
+}
+
+@keyframes roadScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-58px); }
+}
+
+@keyframes dustFade {
+  0% { transform: translateX(0) scale(0.8); opacity: 0.4; }
+  100% { transform: translateX(-18px) scale(1.2); opacity: 0; }
+}
+
 .waste-input-card {
   background: linear-gradient(135deg, #fff9ee 0%, #fff7d6 100%);
   border: 1px solid #f4cca2;
   border-radius: 22px;
   padding: 24px;
   box-shadow: 0 14px 28px rgba(251, 191, 36, 0.18), 0 10px 24px rgba(251, 191, 36, 0.14);
+  position: relative;
+  overflow: hidden;
+}
+
+.waste-input-card::before {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 219, 121, 0.4), rgba(255, 219, 121, 0));
+  pointer-events: none;
 }
 
 .waste-input-card h1 {
@@ -27,15 +338,111 @@
   font-size: 0.95rem;
 }
 
+.editing-note {
+  margin-top: -8px;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff3df;
+  border: 1px solid #f3c68e;
+  color: #9a5400;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .waste-input-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 210px;
+  grid-template-columns: 1.1fr 1fr 220px;
   gap: 12px;
+  align-items: center;
+}
+
+.entry-photo-row {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  background: #fffdf5;
+  border: 1px solid #f4dfc2;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.entry-media-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.entry-media-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #8a3f00;
+  font-weight: 800;
+}
+
+.entry-media-header p {
+  margin: 0;
+  font-size: 0.83rem;
+  color: #6b5c50;
+}
+
+.entry-selected-media {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.entry-edit-actions {
+  margin-top: 8px;
+}
+
+.cancel-edit-btn {
+  border: 1px solid #f2bf86;
+  background: #fff5e8;
+  color: #9a4f00;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.entry-upload-btn {
+  background: #fff6e8;
+}
+
+.entry-photo-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6e6256;
+}
+
+.selected-media-chip {
+  border: 1px solid #f4c891;
+  border-radius: 999px;
+  background: #fff6e8;
+  color: #9a4f00;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .waste-control {
   width: 100%;
-  height: 48px;
+  height: 50px;
   border-radius: 12px;
   border: 1px solid #ddc9b3;
   background: #fff;
@@ -43,6 +450,7 @@
   color: #25392f;
   font-size: 0.95rem;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .waste-control:focus {
@@ -68,7 +476,7 @@
 }
 
 .add-entry-btn {
-  height: 48px;
+  height: 50px;
   border: none;
   border-radius: 12px;
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -102,10 +510,11 @@
 
 .pickup-info-card {
   margin-top: 14px;
-  background: #fffef8;
+  background: linear-gradient(180deg, #fffef9 0%, #fff8ea 100%);
   border: 1px solid #f8ddb8;
   border-radius: 14px;
-  padding: 14px;
+  padding: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .pickup-info-card h3 {
@@ -123,7 +532,7 @@
 .pickup-info-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .pickup-address {
@@ -146,6 +555,12 @@
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(251, 191, 36, 0.24);
 }
 
 .total-weight {
@@ -211,6 +626,19 @@
   text-overflow: ellipsis;
 }
 
+.use-photo-btn {
+  margin-top: 8px;
+  width: 100%;
+  border: 1px solid #f4c891;
+  background: #fff6e8;
+  color: #9a4f00;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .waste-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -247,15 +675,178 @@
 .recent-entries-card li {
   background: #fff9f1;
   border: 1px solid #f6debe;
-  border-radius: 10px;
-  padding: 10px 12px;
+  border-radius: 12px;
+  padding: 11px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.recent-entries-card li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(232, 151, 51, 0.2);
 }
 
 .recent-entries-card li span {
   color: #4a5a52;
+}
+
+.entry-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.entry-thumb-wrap {
+  flex-shrink: 0;
+}
+
+.entry-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #f2d7b8;
+  background: #fff;
+}
+
+.entry-thumb-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  color: #8a7c6c;
+  background: #fff3df;
+}
+
+.entry-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.entry-meta span {
+  font-weight: 700;
+  color: #324236;
+}
+
+.entry-meta small {
+  font-size: 0.72rem;
+  color: #7a7d77;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.entry-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.entry-action-btn {
+  border: 1px solid #e6c9a5;
+  background: #fff;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.entry-action-btn.edit {
+  color: #14532d;
+  border-color: #a7f3d0;
+  background: #f0fdf4;
+}
+
+.entry-action-btn.delete {
+  color: #b91c1c;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.animate-fade-in {
+  animation: fadeIn 420ms ease;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 380ms ease both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 420ms ease both;
+}
+
+.animate-slide-up {
+  animation: slideUp 360ms ease both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 260ms ease both;
+}
+
+.animate-shake {
+  animation: shake 260ms ease;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 300ms ease both;
+}
+
+.highlight-new {
+  animation: pulseHighlight 520ms ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  65% { opacity: 1; transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pulseHighlight {
+  0% { box-shadow: 0 0 0 rgba(251, 191, 36, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.35); }
+  100% { box-shadow: 0 0 0 rgba(251, 191, 36, 0); }
 }
 
 /* .recent-entries-card li strong {
@@ -314,8 +905,44 @@
     padding: 0 20px 12px;
   }
 
+  .waste-truck-banner {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .truck-scene {
+    height: 138px;
+  }
+
+  .truck-bins {
+    right: 8px;
+    bottom: 24px;
+    transform: scale(0.9);
+    transform-origin: right bottom;
+  }
+
+  .truck-motion {
+    left: -30px;
+    transform: scale(0.86);
+    transform-origin: left bottom;
+  }
+
   .waste-input-row {
     grid-template-columns: 1fr;
+  }
+
+  .entry-photo-row {
+    align-items: flex-start;
+  }
+
+  .entry-meta small {
+    max-width: 140px;
+  }
+
+  .entry-right {
+    align-items: flex-end;
+    flex-direction: column;
   }
 
   .waste-grid {

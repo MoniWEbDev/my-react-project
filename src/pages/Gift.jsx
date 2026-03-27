@@ -1,7 +1,221 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Gift.css';
 
 const Gift = () => {
+  const ALL_CATEGORY = '__ALL__';
+  const { language } = useLanguage();
+  const copy = language === 'en'
+    ? {
+        allCategories: 'All Categories',
+        failedLoad: 'Failed to load gifts.',
+        noServer: 'Could not connect to gift server.',
+        claimFailed: 'Failed to claim gift.',
+        claimRetry: 'Could not claim gift. Please try again.',
+        fillDelivery: 'Please fill all delivery details.',
+        validPhone: 'Please enter a valid 10-digit phone number.',
+        phoneMismatch: 'Phone number and confirm phone number do not match.',
+        validPin: 'Please enter a valid 6-digit PIN code.',
+        deliverySaved: 'Delivery details saved successfully.',
+        successSubmitted: 'Success! Your form has been submitted.',
+        validWeightBeforeUpload: 'Please enter valid weight before uploading photo.',
+        imagesOnly: 'Please upload image files only.',
+        photoUploaded: 'Photo uploaded successfully with weight details.',
+        postedSuccess: 'Success! Photo posted to gifts section.',
+        noGifts: 'No gifts found for the selected category.',
+        pageTitle: 'Incentives Section',
+        pageSubtitle: 'Claim eco-friendly rewards based on your recycled total. Total gifts:',
+        weightPlaceholder: 'Weight (KG)',
+        uploadPhoto: 'Upload Photo',
+        submitting: 'Submitting...',
+        submitForm: 'Submit Form',
+        uploadedPreview: 'Uploaded Photos Preview',
+        weight: 'Weight',
+        delete: 'Delete',
+        posted: 'Posted',
+        postPhoto: 'Post Photo',
+        uploadMoreHint: 'Click here to upload any additional photos.',
+        loading: 'Loading gifts...',
+        category: 'Category',
+        postedItem: 'Posted Item',
+        alreadyClaimed: 'Already Claimed',
+        claiming: 'Claiming...',
+        claimGift: 'Claim Gift',
+        namePlaceholder: 'Name',
+        phonePlaceholder: 'Phone No',
+        confirmPhonePlaceholder: 'Confirm Phone',
+        addressPlaceholder: 'Address',
+        blockPlaceholder: 'Block',
+        pinPlaceholder: 'PIN Code',
+      }
+    : language === 'ur'
+    ? {
+        allCategories: 'تمام زمرے',
+        failedLoad: 'تحائف لوڈ نہیں ہو سکے۔',
+        noServer: 'گفٹ سرور سے رابطہ نہیں ہو سکا۔',
+        claimFailed: 'گفٹ کلیم نہیں ہو سکا۔',
+        claimRetry: 'گفٹ کلیم نہیں ہو سکا، دوبارہ کوشش کریں۔',
+        fillDelivery: 'براہِ کرم تمام ڈیلیوری تفصیلات پُر کریں۔',
+        validPhone: 'براہِ کرم درست 10 ہندسوں کا فون نمبر درج کریں۔',
+        phoneMismatch: 'فون نمبر اور تصدیقی فون نمبر ایک جیسے نہیں ہیں۔',
+        validPin: 'براہِ کرم درست 6 ہندسوں کا پن کوڈ درج کریں۔',
+        deliverySaved: 'ڈیلیوری تفصیلات کامیابی سے محفوظ ہو گئیں۔',
+        successSubmitted: 'کامیاب! آپ کا فارم جمع ہو گیا ہے۔',
+        validWeightBeforeUpload: 'تصویر اپلوڈ کرنے سے پہلے درست وزن درج کریں۔',
+        imagesOnly: 'براہِ کرم صرف تصویری فائلیں اپلوڈ کریں۔',
+        photoUploaded: 'وزن کی تفصیل کے ساتھ تصویر کامیابی سے اپلوڈ ہو گئی۔',
+        postedSuccess: 'کامیاب! تصویر گفٹ سیکشن میں پوسٹ ہو گئی۔',
+        noGifts: 'منتخب زمرے کے لیے کوئی گفٹ نہیں ملا۔',
+        pageTitle: 'ترغیبات سیکشن',
+        pageSubtitle: 'اپنے ری سائیکل شدہ وزن کی بنیاد پر ماحول دوست انعامات کلیم کریں۔ کل گفٹس:',
+        weightPlaceholder: 'وزن (کلوگرام)',
+        uploadPhoto: 'تصویر اپلوڈ کریں',
+        submitting: 'جمع کیا جا رہا ہے...',
+        submitForm: 'فارم جمع کریں',
+        uploadedPreview: 'اپلوڈ شدہ تصاویر کا پیش منظر',
+        weight: 'وزن',
+        delete: 'حذف کریں',
+        posted: 'پوسٹ ہو چکا',
+        postPhoto: 'تصویر پوسٹ کریں',
+        uploadMoreHint: 'مزید تصاویر اپلوڈ کرنے کے لیے یہاں کلک کریں۔',
+        loading: 'گفٹس لوڈ ہو رہے ہیں...',
+        category: 'زمرہ',
+        postedItem: 'پوسٹ شدہ آئٹم',
+        alreadyClaimed: 'پہلے ہی کلیم ہو چکا',
+        claiming: 'کلیم کیا جا رہا ہے...',
+        claimGift: 'گفٹ کلیم کریں',
+        namePlaceholder: 'نام',
+        phonePlaceholder: 'فون نمبر',
+        confirmPhonePlaceholder: 'فون نمبر دوبارہ درج کریں',
+        addressPlaceholder: 'پتہ',
+        blockPlaceholder: 'بلاک',
+        pinPlaceholder: 'پن کوڈ',
+      }
+    : {
+        allCategories: 'सभी श्रेणियां',
+        failedLoad: 'उपहार लोड नहीं हो पाए।',
+        noServer: 'गिफ्ट सर्वर से कनेक्ट नहीं हो सका।',
+        claimFailed: 'गिफ्ट क्लेम नहीं हो सका।',
+        claimRetry: 'गिफ्ट क्लेम नहीं हो सका। कृपया फिर प्रयास करें।',
+        fillDelivery: 'कृपया सभी डिलीवरी विवरण भरें।',
+        validPhone: 'कृपया सही 10-अंकीय फोन नंबर दर्ज करें।',
+        phoneMismatch: 'फोन नंबर और कन्फर्म फोन नंबर मेल नहीं खाते।',
+        validPin: 'कृपया सही 6-अंकीय पिन कोड दर्ज करें।',
+        deliverySaved: 'डिलीवरी विवरण सफलतापूर्वक सहेजे गए।',
+        successSubmitted: 'सफल! आपका फॉर्म सबमिट हो गया है।',
+        validWeightBeforeUpload: 'फोटो अपलोड करने से पहले सही वजन दर्ज करें।',
+        imagesOnly: 'कृपया केवल इमेज फाइल अपलोड करें।',
+        photoUploaded: 'वजन विवरण के साथ फोटो सफलतापूर्वक अपलोड हुई।',
+        postedSuccess: 'सफल! फोटो गिफ्ट सेक्शन में पोस्ट हो गई।',
+        noGifts: 'चयनित श्रेणी के लिए कोई गिफ्ट नहीं मिला।',
+        pageTitle: 'प्रोत्साहन सेक्शन',
+        pageSubtitle: 'अपने रीसायकल कुल के आधार पर ईको-फ्रेंडली रिवॉर्ड क्लेम करें। कुल गिफ्ट:',
+        weightPlaceholder: 'वजन (किग्रा)',
+        uploadPhoto: 'फोटो अपलोड करें',
+        submitting: 'सबमिट हो रहा है...',
+        submitForm: 'फॉर्म सबमिट करें',
+        uploadedPreview: 'अपलोड फोटो पूर्वावलोकन',
+        weight: 'वजन',
+        delete: 'हटाएं',
+        posted: 'पोस्टेड',
+        postPhoto: 'फोटो पोस्ट करें',
+        uploadMoreHint: 'अतिरिक्त फोटो अपलोड करने के लिए यहां क्लिक करें।',
+        loading: 'गिफ्ट लोड हो रहे हैं...',
+        category: 'श्रेणी',
+        postedItem: 'पोस्टेड आइटम',
+        alreadyClaimed: 'पहले से क्लेम किया गया',
+        claiming: 'क्लेम हो रहा है...',
+        claimGift: 'गिफ्ट क्लेम करें',
+        namePlaceholder: 'नाम',
+        phonePlaceholder: 'फोन नंबर',
+        confirmPhonePlaceholder: 'फोन नंबर पुनः दर्ज करें',
+        addressPlaceholder: 'पता',
+        blockPlaceholder: 'ब्लॉक',
+        pinPlaceholder: 'पिन कोड',
+      };
+
+  const categoryLabelMapByLanguage = {
+    en: {
+      Plastic: 'Plastic',
+      Iron: 'Iron',
+      Cosmetic: 'Cosmetic',
+      Paper: 'Paper',
+      Cloths: 'Cloths',
+      'Old Shoes': 'Old Shoes',
+      Ceramic: 'Ceramic',
+    },
+    hi: {
+      Plastic: 'प्लास्टिक',
+      Iron: 'लोहा',
+      Cosmetic: 'कॉस्मेटिक',
+      Paper: 'कागज',
+      Cloths: 'कपड़े',
+      'Old Shoes': 'पुराने जूते',
+      Ceramic: 'सिरेमिक',
+    },
+    mr: {
+      Plastic: 'प्लास्टिक',
+      Iron: 'लोखंड',
+      Cosmetic: 'कॉस्मेटिक',
+      Paper: 'कागद',
+      Cloths: 'कपडे',
+      'Old Shoes': 'जुने बूट',
+      Ceramic: 'सिरेमिक',
+    },
+    ur: {
+      Plastic: 'پلاسٹک',
+      Iron: 'لوہا',
+      Cosmetic: 'کاسمیٹک',
+      Paper: 'کاغذ',
+      Cloths: 'کپڑے',
+      'Old Shoes': 'پرانے جوتے',
+      Ceramic: 'سیرامک',
+    },
+    bn: {
+      Plastic: 'প্লাস্টিক',
+      Iron: 'লোহা',
+      Cosmetic: 'কসমেটিক',
+      Paper: 'কাগজ',
+      Cloths: 'কাপড়',
+      'Old Shoes': 'পুরনো জুতো',
+      Ceramic: 'সিরামিক',
+    },
+  };
+  const categoryLabelMap = categoryLabelMapByLanguage[language] || categoryLabelMapByLanguage.en;
+
+  const boxCopyByLanguage = {
+    en: {
+      postedItemPrefix: 'Posted Item',
+      rewardPrefix: 'Reward',
+      postedDescription: 'This item was posted by a user.',
+      rewardDescription: 'This is a recycling incentive item from the selected category.',
+    },
+    hi: {
+      postedItemPrefix: 'पोस्टेड आइटम',
+      rewardPrefix: 'उपहार',
+      postedDescription: 'यह आइटम उपयोगकर्ता द्वारा पोस्ट किया गया है।',
+      rewardDescription: 'यह चयनित श्रेणी का रीसाइक्लिंग प्रोत्साहन आइटम है।',
+    },
+    mr: {
+      postedItemPrefix: 'पोस्ट केलेला आयटम',
+      rewardPrefix: 'बक्षीस',
+      postedDescription: 'हा आयटम वापरकर्त्याने पोस्ट केला आहे.',
+      rewardDescription: 'हा निवडलेल्या श्रेणीतील रीसायकल प्रोत्साहन आयटम आहे.',
+    },
+    ur: {
+      postedItemPrefix: 'پوسٹ شدہ آئٹم',
+      rewardPrefix: 'انعام',
+      postedDescription: 'یہ آئٹم صارف نے پوسٹ کیا ہے۔',
+      rewardDescription: 'یہ منتخب زمرے کا ری سائیکلنگ ترغیبی آئٹم ہے۔',
+    },
+    bn: {
+      postedItemPrefix: 'পোস্ট করা আইটেম',
+      rewardPrefix: 'পুরস্কার',
+      postedDescription: 'এই আইটেমটি ব্যবহারকারী পোস্ট করেছেন।',
+      rewardDescription: 'এটি নির্বাচিত বিভাগের রিসাইক্লিং প্রণোদনা আইটেম।',
+    },
+  };
+  const boxCopy = boxCopyByLanguage[language] || boxCopyByLanguage.en;
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const [gifts, setGifts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +234,7 @@ const Gift = () => {
   const [weightKg, setWeightKg] = useState('');
   const [uploadedItems, setUploadedItems] = useState([]);
   const [postedGifts, setPostedGifts] = useState([]);
-  const [categoryFilter, setCategoryFilter] = useState('All Categories');
+  const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORY);
   const [claimingGiftId, setClaimingGiftId] = useState(null);
 
   const getFallbackImage = (giftId) => `https://picsum.photos/seed/gift-${giftId}/1200/675`;
@@ -34,13 +248,13 @@ const Gift = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || 'Failed to load gifts.');
+        setError(data?.message || copy.failedLoad);
         return;
       }
 
       setGifts(data?.gifts || []);
     } catch {
-      setError('Could not connect to gift server.');
+      setError(copy.noServer);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +277,7 @@ const Gift = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || 'Failed to claim gift.');
+        setError(data?.message || copy.claimFailed);
         return;
       }
 
@@ -75,7 +289,7 @@ const Gift = () => {
         )
       );
     } catch {
-      setError('Could not claim gift. Please try again.');
+      setError(copy.claimRetry);
     } finally {
       setClaimingGiftId(null);
     }
@@ -113,22 +327,22 @@ const Gift = () => {
     const pinPattern = /^\d{6}$/;
 
     if (isMissingField) {
-      setError('Please fill all delivery details.');
+      setError(copy.fillDelivery);
       return;
     }
 
     if (!phonePattern.test(deliveryForm.phone.trim())) {
-      setError('Please enter a valid 10-digit phone number.');
+      setError(copy.validPhone);
       return;
     }
 
     if (deliveryForm.phone.trim() !== deliveryForm.confirmPhone.trim()) {
-      setError('Phone number and confirm phone number do not match.');
+      setError(copy.phoneMismatch);
       return;
     }
 
     if (!pinPattern.test(deliveryForm.pinCode.trim())) {
-      setError('Please enter a valid 6-digit PIN code.');
+      setError(copy.validPin);
       return;
     }
 
@@ -136,8 +350,8 @@ const Gift = () => {
 
     setTimeout(() => {
       setIsSubmittingDelivery(false);
-      setDeliveryMessage('Delivery details saved successfully.');
-      setSuccessPopupMessage('Success! Your form has been submitted.');
+      setDeliveryMessage(copy.deliverySaved);
+      setSuccessPopupMessage(copy.successSubmitted);
       setTimeout(() => {
         setSuccessPopupMessage('');
       }, 2200);
@@ -151,14 +365,14 @@ const Gift = () => {
     if (!files.length) return;
 
     if (!parsedWeight || parsedWeight <= 0) {
-      setError('Please enter valid weight before uploading photo.');
+      setError(copy.validWeightBeforeUpload);
       event.target.value = '';
       return;
     }
 
     const imageFiles = files.filter((file) => file.type.startsWith('image/'));
     if (!imageFiles.length) {
-      setError('Please upload image files only.');
+      setError(copy.imagesOnly);
       event.target.value = '';
       return;
     }
@@ -174,7 +388,7 @@ const Gift = () => {
 
     setUploadedItems((prev) => [...items, ...prev].slice(0, 12));
     setError('');
-    setDeliveryMessage('Photo uploaded successfully with weight details.');
+    setDeliveryMessage(copy.photoUploaded);
     event.target.value = '';
   };
 
@@ -195,7 +409,7 @@ const Gift = () => {
       return;
     }
 
-    const selectedCategory = categoryFilter === 'All Categories' ? 'Plastic' : categoryFilter;
+    const selectedCategory = categoryFilter === ALL_CATEGORY ? 'Plastic' : categoryFilter;
     const postedGift = {
       giftId: `user-post-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       title: `Posted: ${selectedItem.name}`,
@@ -210,7 +424,7 @@ const Gift = () => {
     setUploadedItems((prev) =>
       prev.map((item) => (item.id === itemId ? { ...item, posted: true } : item))
     );
-    setSuccessPopupMessage('Success! Photo posted to gifts section.');
+    setSuccessPopupMessage(copy.postedSuccess);
     setTimeout(() => {
       setSuccessPopupMessage('');
     }, 2200);
@@ -219,7 +433,7 @@ const Gift = () => {
   const visibleGifts = useMemo(() => {
     return gifts.filter((gift) => {
       const giftCategory = getGiftCategory(gift);
-      const matchesCategory = categoryFilter === 'All Categories' || giftCategory === categoryFilter;
+      const matchesCategory = categoryFilter === ALL_CATEGORY || giftCategory === categoryFilter;
 
       return matchesCategory;
     });
@@ -227,11 +441,11 @@ const Gift = () => {
 
   const visiblePostedGifts = useMemo(() => {
     return postedGifts.filter((gift) =>
-      categoryFilter === 'All Categories' || gift.category === categoryFilter
+      categoryFilter === ALL_CATEGORY || gift.category === categoryFilter
     );
   }, [postedGifts, categoryFilter]);
 
-  const emptyStateMessage = 'No gifts found for the selected category.';
+  const emptyStateMessage = copy.noGifts;
 
   const featuredGifts = [
     {
@@ -453,18 +667,35 @@ const Gift = () => {
   ];
 
   const featuredVisible = featuredGifts.filter((gift) =>
-    categoryFilter === 'All Categories' || gift.category === categoryFilter
+    categoryFilter === ALL_CATEGORY || gift.category === categoryFilter
   );
 
   const cardsToRender = [...visiblePostedGifts, ...featuredVisible, ...visibleGifts];
+
+  const localizeGiftTitle = (gift) => {
+    if (language === 'en') return gift.title;
+    if (gift.isUserPost) {
+      return `${boxCopy.postedItemPrefix}: ${gift.title.replace(/^Posted:\s*/, '')}`;
+    }
+    const localizedCategory = categoryLabelMap[gift.category || getGiftCategory(gift)] || (gift.category || getGiftCategory(gift));
+    return `${boxCopy.rewardPrefix}: ${localizedCategory}`;
+  };
+
+  const localizeGiftDescription = (gift) => {
+    if (language === 'en') return gift.description;
+    if (gift.isUserPost) {
+      return `${boxCopy.postedDescription} ${copy.weight}: ${gift.weight || '-'} ${gift.weightUnit || 'kg'}.`;
+    }
+    return `${boxCopy.rewardDescription} ${copy.category}: ${categoryLabelMap[gift.category || getGiftCategory(gift)] || (gift.category || getGiftCategory(gift))}.`;
+  };
 
   return (
     <section className="gift-page">
       {successPopupMessage ? <div className="gift-success-popup">{successPopupMessage}</div> : null}
       <div className="gift-header">
-        <h1>Gifts Section</h1>
+        <h1>{copy.pageTitle}</h1>
         <p>
-          Claim eco-friendly rewards based on your recycled total. Total gifts: {gifts.length}
+          {copy.pageSubtitle} {gifts.length}
         </p>
 
         <div className="gift-toolbar">
@@ -473,14 +704,14 @@ const Gift = () => {
             onChange={(event) => setCategoryFilter(event.target.value)}
             className="gift-filter-select"
           >
-            <option value="All Categories">All Categories</option>
-            <option value="Plastic">Plastic</option>
-            <option value="Iron">Iron</option>
-            <option value="Cosmetic">Cosmetic</option>
-            <option value="Paper">Paper</option>
-            <option value="Cloths">Cloths</option>
-            <option value="Old Shoes">Old Shoes</option>
-            <option value="Ceramic">Ceramic</option>
+            <option value={ALL_CATEGORY}>{copy.allCategories}</option>
+            <option value="Plastic">{categoryLabelMap.Plastic}</option>
+            <option value="Iron">{categoryLabelMap.Iron}</option>
+            <option value="Cosmetic">{categoryLabelMap.Cosmetic}</option>
+            <option value="Paper">{categoryLabelMap.Paper}</option>
+            <option value="Cloths">{categoryLabelMap.Cloths}</option>
+            <option value="Old Shoes">{categoryLabelMap['Old Shoes']}</option>
+            <option value="Ceramic">{categoryLabelMap.Ceramic}</option>
           </select>
         </div>
 
@@ -488,7 +719,7 @@ const Gift = () => {
           <input
             type="text"
             name="fullName"
-            placeholder="Name"
+            placeholder={copy.namePlaceholder}
             value={deliveryForm.fullName}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -498,7 +729,7 @@ const Gift = () => {
             type="tel"
             name="phone"
             maxLength="10"
-            placeholder="Phone No"
+            placeholder={copy.phonePlaceholder}
             value={deliveryForm.phone}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -508,7 +739,7 @@ const Gift = () => {
             type="tel"
             name="confirmPhone"
             maxLength="10"
-            placeholder="Confirm Phone"
+            placeholder={copy.confirmPhonePlaceholder}
             value={deliveryForm.confirmPhone}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -517,7 +748,7 @@ const Gift = () => {
           <input
             type="text"
             name="address"
-            placeholder="Address"
+            placeholder={copy.addressPlaceholder}
             value={deliveryForm.address}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -526,7 +757,7 @@ const Gift = () => {
           <input
             type="text"
             name="block"
-            placeholder="Block"
+            placeholder={copy.blockPlaceholder}
             value={deliveryForm.block}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -536,7 +767,7 @@ const Gift = () => {
             type="text"
             name="pinCode"
             maxLength="6"
-            placeholder="PIN Code"
+            placeholder={copy.pinPlaceholder}
             value={deliveryForm.pinCode}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -549,13 +780,13 @@ const Gift = () => {
             type="number"
             min="0"
             step="0.1"
-            placeholder="Weight (KG)"
+            placeholder={copy.weightPlaceholder}
             value={weightKg}
             onChange={(event) => setWeightKg(event.target.value)}
             className="gift-add-input"
           />
           <label className="gift-upload-btn" htmlFor="gift-photo-upload">
-            Upload Photo
+            {copy.uploadPhoto}
           </label>
           <input
             id="gift-photo-upload"
@@ -574,7 +805,7 @@ const Gift = () => {
             className="gift-claim-btn gift-submit-form-btn"
             disabled={isSubmittingDelivery}
           >
-            {isSubmittingDelivery ? 'Submitting...' : 'Submit Form'}
+            {isSubmittingDelivery ? copy.submitting : copy.submitForm}
           </button>
         </div>
 
@@ -585,7 +816,7 @@ const Gift = () => {
 
       {uploadedItems.length > 0 ? (
         <div className="gift-uploaded-section">
-          <h3>Uploaded Photos Preview</h3>
+          <h3>{copy.uploadedPreview}</h3>
           <div className="gift-uploaded-layout">
             <div className="gift-uploaded-left">
               <div className="gift-uploaded-grid">
@@ -594,13 +825,13 @@ const Gift = () => {
                     <img src={item.previewUrl} alt={item.name} className="gift-uploaded-image" />
                     <figcaption>
                       <span className="gift-uploaded-name">{item.name}</span>
-                      <span className="gift-uploaded-weight">Weight: {item.weight} {item.weightUnit}</span>
+                      <span className="gift-uploaded-weight">{copy.weight}: {item.weight} {item.weightUnit}</span>
                       <button
                         type="button"
                         className="gift-uploaded-delete-btn"
                         onClick={() => handleDeleteUploadedItem(item.id)}
                       >
-                        Delete
+                        {copy.delete}
                       </button>
                       <button
                         type="button"
@@ -608,7 +839,7 @@ const Gift = () => {
                         onClick={() => handlePostUploadedItem(item.id)}
                         disabled={item.posted}
                       >
-                        {item.posted ? 'Posted' : 'Post Photo'}
+                        {item.posted ? copy.posted : copy.postPhoto}
                       </button>
                     </figcaption>
                   </figure>
@@ -617,7 +848,7 @@ const Gift = () => {
             </div>
 
             <div className="gift-uploaded-right">
-              <p className="gift-uploaded-note">Click here to upload any additional photos.</p>
+              <p className="gift-uploaded-note">{copy.uploadMoreHint}</p>
             </div>
           </div>
         </div>
@@ -625,7 +856,7 @@ const Gift = () => {
 
       {isLoading ? (
         <div className="gift-empty-state">
-          <p>Loading gifts...</p>
+          <p>{copy.loading}</p>
         </div>
       ) : cardsToRender.length === 0 ? (
         <div className="gift-empty-state">
@@ -638,7 +869,7 @@ const Gift = () => {
               <div className="gift-image-container">
                 <img
                   src={gift.image || getFallbackImage(gift.giftId)}
-                  alt={gift.title}
+                  alt={localizeGiftTitle(gift)}
                   className="gift-image"
                   onError={(event) => {
                     const fallbackImage = getFallbackImage(gift.giftId);
@@ -649,10 +880,10 @@ const Gift = () => {
                 />
               </div>
               <div className="gift-content">
-                <h3 className="gift-title">{gift.title}</h3>
-                <p className="gift-description">{gift.description}</p>
+                <h3 className="gift-title">{localizeGiftTitle(gift)}</h3>
+                <p className="gift-description">{localizeGiftDescription(gift)}</p>
                 <p className="gift-status-text">
-                  Category: {gift.category || getGiftCategory(gift)}
+                  {copy.category}: {categoryLabelMap[gift.category || getGiftCategory(gift)] || (gift.category || getGiftCategory(gift))}
                 </p>
                 <button
                   type="button"
@@ -661,12 +892,12 @@ const Gift = () => {
                   disabled={gift.isUserPost || gift.claimed || claimingGiftId === gift.giftId}
                 >
                   {gift.isUserPost
-                    ? 'Posted Item'
+                    ? copy.postedItem
                     : gift.claimed
-                    ? 'Already Claimed'
+                    ? copy.alreadyClaimed
                     : claimingGiftId === gift.giftId
-                      ? 'Claiming...'
-                      : 'Claim Gift'}
+                      ? copy.claiming
+                      : copy.claimGift}
                 </button>
               </div>
             </div>
