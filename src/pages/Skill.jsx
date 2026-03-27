@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Search, Mic } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Skill.css';
 
 const Skill = () => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [levelFilter, setLevelFilter] = useState('All');
@@ -108,11 +110,30 @@ const Skill = () => {
   ];
 
   const stats = [
-    { label: 'Overall Progress', value: summary.overallProgress },
-    { label: 'Skills Completed', value: summary.skillsCompleted },
-    { label: 'Certificates', value: summary.certificates },
-    { label: 'Points', value: summary.points },
+    { label: t('skillProgress'), value: summary.overallProgress },
+    { label: t('skillCompleted'), value: summary.skillsCompleted },
+    { label: t('skillCertificates'), value: summary.certificates },
+    { label: t('skillPoints'), value: summary.points },
   ];
+
+  const categoryLabel = (category) => {
+    if (category === 'Agriculture') return t('skillCategoryAgriculture');
+    if (category === 'Waste Management') return t('skillCategoryWasteManagement');
+    return category;
+  };
+
+  const levelLabel = (level) => {
+    if (level === 'Beginner') return t('skillBeginner');
+    if (level === 'Intermediate') return t('skillIntermediate');
+    if (level === 'Advanced') return t('skillAdvanced');
+    return level;
+  };
+
+  const statusLabel = (status) => {
+    if (status === 'In progress') return t('skillInProgress');
+    if (status === 'Not started') return t('skillNotStarted');
+    return status;
+  };
 
   const filteredSkills = skills.filter((skill) => {
     const query = searchQuery.trim().toLowerCase();
@@ -128,8 +149,8 @@ const Skill = () => {
   return (
     <section className="skill-page">
       <div className="skill-header">
-        <h1>{summary.totalSkills} Skills Learning Hub</h1>
-        <p>Explore all 101 skills with structured videos, adaptive testing, and practical assignments.</p>
+        <h1>{summary.totalSkills} {t('skillLearningHubTitle')}</h1>
+        <p>{t('skillLearningHubSubtitle')}</p>
 
         <div className="skill-stats">
           {stats.map((stat, idx) => (
@@ -143,19 +164,19 @@ const Skill = () => {
         </div>
 
         <button className="continue-learning-btn">
-          Continue Learning: {summary.currentSkill}
+          {t('skillContinueLearning')}: {summary.currentSkill}
         </button>
       </div>
 
       <div className="explore-skills">
-        <h2>Explore Skills</h2>
+        <h2>{t('skillExploreTitle')}</h2>
 
         <div className="skill-controls">
           <div className="search-container">
             <Search size={18} className="search-icon" />
             <input
               type="text"
-              placeholder="Search all 101 skills"
+              placeholder={t('skillSearchAllPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="skill-search"
@@ -168,9 +189,9 @@ const Skill = () => {
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="filter-select"
             >
-              <option>All</option>
-              <option>Agriculture</option>
-              <option>Waste Management</option>
+              <option>{t('skillAllOption')}</option>
+              <option>{t('skillCategoryAgriculture')}</option>
+              <option>{t('skillCategoryWasteManagement')}</option>
             </select>
 
             <select
@@ -178,14 +199,14 @@ const Skill = () => {
               onChange={(e) => setLevelFilter(e.target.value)}
               className="filter-select"
             >
-              <option>All</option>
-              <option>Beginner</option>
-              <option>Intermediate</option>
-              <option>Advanced</option>
+              <option>{t('skillAllOption')}</option>
+              <option>{t('skillBeginner')}</option>
+              <option>{t('skillIntermediate')}</option>
+              <option>{t('skillAdvanced')}</option>
             </select>
 
             <button className="voice-search-btn">
-              <Mic size={16} /> Voice Search
+              <Mic size={16} /> {t('skillVoiceSearch')}
             </button>
           </div>
         </div>
@@ -200,13 +221,13 @@ const Skill = () => {
               <div className="skill-content">
                 <h3 className="skill-title">{skill.title}</h3>
                 <p className="skill-meta">
-                  {skill.category} • {skill.level}
+                  {categoryLabel(skill.category)} • {levelLabel(skill.level)}
                 </p>
                 <p className="skill-description">{skill.description}</p>
 
                 <div className="progress-section">
                   <div className="progress-header">
-                    <span className="progress-label">Skill progress</span>
+                    <span className="progress-label">{t('skillProgressLabel')}</span>
                     <span className="progress-value">{skill.progress}%</span>
                   </div>
                   <div className="progress-bar">
@@ -218,18 +239,18 @@ const Skill = () => {
                 </div>
 
                 <div className="skill-info">
-                  <span className="module-count">▦ {skill.modules} modules</span>
-                  <span className="module-status">◉ {skill.status}</span>
+                  <span className="module-count">▦ {skill.modules} {t('skillModulesLabel')}</span>
+                  <span className="module-status">◉ {statusLabel(skill.status)}</span>
                 </div>
 
-                <button className="open-skill-btn">Open Skill</button>
+                <button className="open-skill-btn">{t('skillOpenButton')}</button>
               </div>
             </div>
           ))}
 
           {filteredSkills.length === 0 ? (
             <div className="skill-empty-state">
-              <p>No skills match your current search or filters.</p>
+              <p>{t('skillNoResults')}</p>
             </div>
           ) : null}
         </div>

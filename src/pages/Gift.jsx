@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Gift.css';
 
 const Gift = () => {
+  const { t } = useLanguage();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const [gifts, setGifts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,17 +36,17 @@ const Gift = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || 'Failed to load gifts.');
+        setError(data?.message || t('giftErrorLoad'));
         return;
       }
 
       setGifts(data?.gifts || []);
     } catch {
-      setError('Could not connect to gift server.');
+      setError(t('giftErrorServer'));
     } finally {
       setIsLoading(false);
     }
-  }, [API_BASE_URL]);
+  }, [API_BASE_URL, t]);
 
   useEffect(() => {
     fetchGifts();
@@ -63,7 +65,7 @@ const Gift = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.message || 'Failed to claim gift.');
+        setError(data?.message || t('giftErrorClaim'));
         return;
       }
 
@@ -75,7 +77,7 @@ const Gift = () => {
         )
       );
     } catch {
-      setError('Could not claim gift. Please try again.');
+      setError(t('giftErrorClaimTryAgain'));
     } finally {
       setClaimingGiftId(null);
     }
@@ -113,22 +115,22 @@ const Gift = () => {
     const pinPattern = /^\d{6}$/;
 
     if (isMissingField) {
-      setError('Please fill all delivery details.');
+      setError(t('giftErrorDeliveryRequired'));
       return;
     }
 
     if (!phonePattern.test(deliveryForm.phone.trim())) {
-      setError('Please enter a valid 10-digit phone number.');
+      setError(t('giftErrorPhoneInvalid'));
       return;
     }
 
     if (deliveryForm.phone.trim() !== deliveryForm.confirmPhone.trim()) {
-      setError('Phone number and confirm phone number do not match.');
+      setError(t('giftErrorPhoneMismatch'));
       return;
     }
 
     if (!pinPattern.test(deliveryForm.pinCode.trim())) {
-      setError('Please enter a valid 6-digit PIN code.');
+      setError(t('giftErrorPinInvalid'));
       return;
     }
 
@@ -136,8 +138,8 @@ const Gift = () => {
 
     setTimeout(() => {
       setIsSubmittingDelivery(false);
-      setDeliveryMessage('Delivery details saved successfully.');
-      setSuccessPopupMessage('Success! Your form has been submitted.');
+      setDeliveryMessage(t('giftDeliverySaved'));
+      setSuccessPopupMessage(t('giftFormSuccessPopup'));
       setTimeout(() => {
         setSuccessPopupMessage('');
       }, 2200);
@@ -151,14 +153,14 @@ const Gift = () => {
     if (!files.length) return;
 
     if (!parsedWeight || parsedWeight <= 0) {
-      setError('Please enter valid weight before uploading photo.');
+      setError(t('giftErrorWeightBeforeUpload'));
       event.target.value = '';
       return;
     }
 
     const imageFiles = files.filter((file) => file.type.startsWith('image/'));
     if (!imageFiles.length) {
-      setError('Please upload image files only.');
+      setError(t('giftErrorImagesOnly'));
       event.target.value = '';
       return;
     }
@@ -174,7 +176,7 @@ const Gift = () => {
 
     setUploadedItems((prev) => [...items, ...prev].slice(0, 12));
     setError('');
-    setDeliveryMessage('Photo uploaded successfully with weight details.');
+    setDeliveryMessage(t('giftPhotoUploadedSuccess'));
     event.target.value = '';
   };
 
@@ -210,7 +212,7 @@ const Gift = () => {
     setUploadedItems((prev) =>
       prev.map((item) => (item.id === itemId ? { ...item, posted: true } : item))
     );
-    setSuccessPopupMessage('Success! Photo posted to gifts section.');
+    setSuccessPopupMessage(t('giftPhotoPostedSuccess'));
     setTimeout(() => {
       setSuccessPopupMessage('');
     }, 2200);
@@ -231,7 +233,7 @@ const Gift = () => {
     );
   }, [postedGifts, categoryFilter]);
 
-  const emptyStateMessage = 'No gifts found for the selected category.';
+  const emptyStateMessage = t('giftEmptyState');
 
   const featuredGifts = [
     {
@@ -462,9 +464,9 @@ const Gift = () => {
     <section className="gift-page">
       {successPopupMessage ? <div className="gift-success-popup">{successPopupMessage}</div> : null}
       <div className="gift-header">
-        <h1>Gifts Section</h1>
+        <h1>{t('giftSectionTitle')}</h1>
         <p>
-          Claim eco-friendly rewards based on your recycled total. Total gifts: {gifts.length}
+          {t('giftSectionSubtitle')} {gifts.length}
         </p>
 
         <div className="gift-toolbar">
@@ -473,14 +475,14 @@ const Gift = () => {
             onChange={(event) => setCategoryFilter(event.target.value)}
             className="gift-filter-select"
           >
-            <option value="All Categories">All Categories</option>
-            <option value="Plastic">Plastic</option>
-            <option value="Iron">Iron</option>
-            <option value="Cosmetic">Cosmetic</option>
-            <option value="Paper">Paper</option>
-            <option value="Cloths">Cloths</option>
-            <option value="Old Shoes">Old Shoes</option>
-            <option value="Ceramic">Ceramic</option>
+            <option value="All Categories">{t('giftAllCategories')}</option>
+            <option value="Plastic">{t('giftCategoryPlastic')}</option>
+            <option value="Iron">{t('giftCategoryIron')}</option>
+            <option value="Cosmetic">{t('giftCategoryCosmetic')}</option>
+            <option value="Paper">{t('giftCategoryPaper')}</option>
+            <option value="Cloths">{t('giftCategoryCloths')}</option>
+            <option value="Old Shoes">{t('giftCategoryOldShoes')}</option>
+            <option value="Ceramic">{t('giftCategoryCeramic')}</option>
           </select>
         </div>
 
@@ -488,7 +490,7 @@ const Gift = () => {
           <input
             type="text"
             name="fullName"
-            placeholder="Name"
+            placeholder={t('profileName')}
             value={deliveryForm.fullName}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -498,7 +500,7 @@ const Gift = () => {
             type="tel"
             name="phone"
             maxLength="10"
-            placeholder="Phone No"
+            placeholder={t('incomeSourcePhone')}
             value={deliveryForm.phone}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -508,7 +510,7 @@ const Gift = () => {
             type="tel"
             name="confirmPhone"
             maxLength="10"
-            placeholder="Confirm Phone"
+            placeholder={t('incomeSourceConfirmPhone')}
             value={deliveryForm.confirmPhone}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -517,7 +519,7 @@ const Gift = () => {
           <input
             type="text"
             name="address"
-            placeholder="Address"
+            placeholder={t('incomeSourceAddress')}
             value={deliveryForm.address}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -526,7 +528,7 @@ const Gift = () => {
           <input
             type="text"
             name="block"
-            placeholder="Block"
+            placeholder={t('incomeSourceBlock')}
             value={deliveryForm.block}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -536,7 +538,7 @@ const Gift = () => {
             type="text"
             name="pinCode"
             maxLength="6"
-            placeholder="PIN Code"
+            placeholder={t('incomeSourcePinCode')}
             value={deliveryForm.pinCode}
             onChange={handleDeliveryInputChange}
             className="gift-add-input"
@@ -549,13 +551,13 @@ const Gift = () => {
             type="number"
             min="0"
             step="0.1"
-            placeholder="Weight (KG)"
+            placeholder={t('incomeSourceWeight')}
             value={weightKg}
             onChange={(event) => setWeightKg(event.target.value)}
             className="gift-add-input"
           />
           <label className="gift-upload-btn" htmlFor="gift-photo-upload">
-            Upload Photo
+            {t('incomeUploadPhotos')}
           </label>
           <input
             id="gift-photo-upload"
@@ -574,7 +576,7 @@ const Gift = () => {
             className="gift-claim-btn gift-submit-form-btn"
             disabled={isSubmittingDelivery}
           >
-            {isSubmittingDelivery ? 'Submitting...' : 'Submit Form'}
+            {isSubmittingDelivery ? t('giftSubmitting') : t('giftSubmitForm')}
           </button>
         </div>
 
@@ -585,7 +587,7 @@ const Gift = () => {
 
       {uploadedItems.length > 0 ? (
         <div className="gift-uploaded-section">
-          <h3>Uploaded Photos Preview</h3>
+          <h3>{t('giftUploadedPreview')}</h3>
           <div className="gift-uploaded-layout">
             <div className="gift-uploaded-left">
               <div className="gift-uploaded-grid">
@@ -594,13 +596,13 @@ const Gift = () => {
                     <img src={item.previewUrl} alt={item.name} className="gift-uploaded-image" />
                     <figcaption>
                       <span className="gift-uploaded-name">{item.name}</span>
-                      <span className="gift-uploaded-weight">Weight: {item.weight} {item.weightUnit}</span>
+                      <span className="gift-uploaded-weight">{t('giftWeightLabel')}: {item.weight} {item.weightUnit}</span>
                       <button
                         type="button"
                         className="gift-uploaded-delete-btn"
                         onClick={() => handleDeleteUploadedItem(item.id)}
                       >
-                        Delete
+                        {t('deleteBtn')}
                       </button>
                       <button
                         type="button"
@@ -608,7 +610,7 @@ const Gift = () => {
                         onClick={() => handlePostUploadedItem(item.id)}
                         disabled={item.posted}
                       >
-                        {item.posted ? 'Posted' : 'Post Photo'}
+                        {item.posted ? t('giftPostedStatus') : t('giftPostPhoto')}
                       </button>
                     </figcaption>
                   </figure>
@@ -617,7 +619,7 @@ const Gift = () => {
             </div>
 
             <div className="gift-uploaded-right">
-              <p className="gift-uploaded-note">Click here to upload any additional photos.</p>
+              <p className="gift-uploaded-note">{t('giftUploadMoreNote')}</p>
             </div>
           </div>
         </div>
@@ -625,7 +627,7 @@ const Gift = () => {
 
       {isLoading ? (
         <div className="gift-empty-state">
-          <p>Loading gifts...</p>
+          <p>{t('giftLoading')}</p>
         </div>
       ) : cardsToRender.length === 0 ? (
         <div className="gift-empty-state">
@@ -652,7 +654,7 @@ const Gift = () => {
                 <h3 className="gift-title">{gift.title}</h3>
                 <p className="gift-description">{gift.description}</p>
                 <p className="gift-status-text">
-                  Category: {gift.category || getGiftCategory(gift)}
+                  {t('categoryLabel')}: {gift.category || getGiftCategory(gift)}
                 </p>
                 <button
                   type="button"
@@ -661,12 +663,12 @@ const Gift = () => {
                   disabled={gift.isUserPost || gift.claimed || claimingGiftId === gift.giftId}
                 >
                   {gift.isUserPost
-                    ? 'Posted Item'
+                    ? t('giftPostedItem')
                     : gift.claimed
-                    ? 'Already Claimed'
+                    ? t('giftAlreadyClaimed')
                     : claimingGiftId === gift.giftId
-                      ? 'Claiming...'
-                      : 'Claim Gift'}
+                      ? t('giftClaiming')
+                      : t('giftClaimBtn')}
                 </button>
               </div>
             </div>

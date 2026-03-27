@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Upload, Weight, Gift, LayoutDashboard } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './IncomeSource.css';
 
 const IncomeSource = () => {
+  const { t } = useLanguage();
   const [wasteType, setWasteType] = useState('Plastic');
   const [weight, setWeight] = useState('');
   const [entries, setEntries] = useState([
@@ -14,8 +16,6 @@ const IncomeSource = () => {
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [newEntryAdded, setNewEntryAdded] = useState(false);
   const [pickupInfo, setPickupInfo] = useState({
     fullName: '',
     phone: '',
@@ -41,52 +41,52 @@ const IncomeSource = () => {
     const phonePattern = /^[6-9]\d{9}$/;
 
     if (isAnyRequiredMissing) {
-      setError('Please fill all required fields before submitting.');
+      setError(t('incomeErrorRequiredFields'));
       setSuccess('');
-      window.alert('Please fill this: complete all required fields.');
+      window.alert(t('incomeAlertRequiredFields'));
       return;
     }
 
     if (!pickupInfo.fullName.trim()) {
-      setError('Please enter full name.');
+      setError(t('incomeErrorFullName'));
       setSuccess('');
       return;
     }
 
     if (!phonePattern.test(pickupInfo.phone.trim())) {
-      setError('Please enter a valid 10-digit phone number.');
+      setError(t('incomeErrorPhoneInvalid'));
       setSuccess('');
       return;
     }
 
     if (pickupInfo.phone.trim() !== pickupInfo.confirmPhone.trim()) {
-      setError('Phone number and confirm phone number must match.');
+      setError(t('incomeErrorPhoneMismatch'));
       setSuccess('');
       return;
     }
 
     if (!pickupInfo.address.trim()) {
-      setError('Please enter address.');
+      setError(t('incomeErrorAddress'));
       setSuccess('');
       return;
     }
 
     if (!/^\d{6}$/.test(pickupInfo.pinCode.trim())) {
-      setError('Please enter a valid 6-digit PIN code.');
+      setError(t('incomeErrorPinInvalid'));
       setSuccess('');
       return;
     }
 
     if (!pickupInfo.block.trim() || !pickupInfo.village.trim()) {
-      setError('Please enter both block and village details.');
+      setError(t('incomeErrorBlockVillage'));
       setSuccess('');
       return;
     }
 
     if (!parsedWeight || parsedWeight <= 0) {
-      setError('Please enter a valid weight greater than 0.');
+      setError(t('incomeErrorWeightInvalid'));
       setSuccess('');
-      window.alert('Please fill this: enter a valid weight.');
+      window.alert(t('incomeAlertWeightInvalid'));
       return;
     }
 
@@ -96,12 +96,8 @@ const IncomeSource = () => {
     ]);
     setWeight('');
     setError('');
-    setSuccess('Form submitted successfully. Your waste pickup details have been saved.');
-    setShowSuccess(true);
-    setNewEntryAdded(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-    setTimeout(() => setNewEntryAdded(false), 600);
-    window.alert('Successfully submitted. Your waste pickup details have been saved.');
+    setSuccess(t('incomeSuccessSubmitted'));
+    window.alert(t('incomeSuccessAlertSubmitted'));
   };
 
   const handlePickupInputChange = (event) => {
@@ -119,7 +115,7 @@ const IncomeSource = () => {
 
     const imageFiles = files.filter((file) => file.type.startsWith('image/'));
     if (!imageFiles.length) {
-      setError('Please upload image files only.');
+      setError(t('incomeErrorImagesOnly'));
       event.target.value = '';
       return;
     }
@@ -138,10 +134,10 @@ const IncomeSource = () => {
 
   return (
     <section className="waste-page">
-      <div className="waste-input-card animate-fade-in">
-        <h1>Waste Input</h1>
+      <div className="waste-input-card">
+        <h1>{t('incomeSourceTitle')}</h1>
         <p>
-          Add household waste manually or upload photos from your phone gallery or camera.
+          {t('incomeIntro')}
         </p>
 
         <div className="waste-input-row">
@@ -150,12 +146,12 @@ const IncomeSource = () => {
             onChange={(event) => setWasteType(event.target.value)}
             className="waste-control"
           >
-            <option>Plastic</option>
-            <option>Paper</option>
-            <option>Metal</option>
-            <option>Glass</option>
-            <option>Organic</option>
-            <option>E-Waste</option>
+            <option>{t('wasteTypePlastic')}</option>
+            <option>{t('wasteTypePaper')}</option>
+            <option>{t('wasteTypeMetal')}</option>
+            <option>{t('wasteTypeGlass')}</option>
+            <option>{t('wasteTypeOrganic')}</option>
+            <option>{t('wasteTypeEWaste')}</option>
           </select>
 
           <div className="weight-field">
@@ -164,7 +160,7 @@ const IncomeSource = () => {
               type="number"
               min="0"
               step="0.1"
-              placeholder="Weight (kg)"
+              placeholder={t('incomeSourceWeight')}
               value={weight}
               onChange={(event) => setWeight(event.target.value)}
               className="waste-control"
@@ -177,19 +173,19 @@ const IncomeSource = () => {
             onClick={handleAddEntry}
             aria-disabled={isFormIncomplete}
           >
-            Add Entry
+            {t('incomeSourceAddEntry')}
           </button>
         </div>
 
         <div className="pickup-info-card">
-          <h3>Pickup Information</h3>
-          <p>Add your contact and address details for doorstep scrap pickup.</p>
+          <h3>{t('incomePickupInfoTitle')}</h3>
+          <p>{t('incomePickupInfoDesc')}</p>
 
           <div className="pickup-info-grid">
             <input
               type="text"
               name="fullName"
-              placeholder="Full Name"
+              placeholder={t('incomeSourceFullName')}
               value={pickupInfo.fullName}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -199,7 +195,7 @@ const IncomeSource = () => {
               type="tel"
               name="phone"
               maxLength="10"
-              placeholder="Phone Number"
+              placeholder={t('incomeSourcePhone')}
               value={pickupInfo.phone}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -209,7 +205,7 @@ const IncomeSource = () => {
               type="tel"
               name="confirmPhone"
               maxLength="10"
-              placeholder="Confirm Phone Number"
+              placeholder={t('incomeSourceConfirmPhone')}
               value={pickupInfo.confirmPhone}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -219,7 +215,7 @@ const IncomeSource = () => {
               type="text"
               name="pinCode"
               maxLength="6"
-              placeholder="PIN Code"
+              placeholder={t('incomeSourcePinCode')}
               value={pickupInfo.pinCode}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -228,7 +224,7 @@ const IncomeSource = () => {
             <input
               type="text"
               name="block"
-              placeholder="Block"
+              placeholder={t('incomeSourceBlock')}
               value={pickupInfo.block}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -237,7 +233,7 @@ const IncomeSource = () => {
             <input
               type="text"
               name="village"
-              placeholder="Village"
+              placeholder={t('incomeSourceVillage')}
               value={pickupInfo.village}
               onChange={handlePickupInputChange}
               className="waste-control"
@@ -246,7 +242,7 @@ const IncomeSource = () => {
             <textarea
               name="address"
               rows="3"
-              placeholder="House no, street, area"
+              placeholder={t('incomeAddressPlaceholder')}
               value={pickupInfo.address}
               onChange={handlePickupInputChange}
               className="waste-control pickup-address"
@@ -257,7 +253,7 @@ const IncomeSource = () => {
 
         <div className="waste-input-footer">
           <label className="upload-btn" htmlFor="photo-upload">
-            <Upload size={15} /> Upload Photos
+            <Upload size={15} /> {t('incomeUploadPhotos')}
           </label>
           <input
             id="photo-upload"
@@ -269,18 +265,18 @@ const IncomeSource = () => {
             hidden
           />
 
-          <span className="total-weight">Total submitted: {totalSubmitted.toFixed(1)} kg</span>
+          <span className="total-weight">{t('incomeTotalSubmitted')}: {totalSubmitted.toFixed(1)} kg</span>
         </div>
 
-        {error && <p className="waste-error animate-shake">{error}</p>}
-        {success && <p className={`waste-success ${showSuccess ? 'animate-bounce-in' : 'animate-bounce-out'}`}>{success}</p>}
+        {error && <p className="waste-error">{error}</p>}
+        {success && <p className="waste-success">{success}</p>}
 
         {uploadedPhotos.length > 0 && (
-          <div className="uploaded-photos animate-scale-in">
-            <h3>Uploaded Photos</h3>
+          <div className="uploaded-photos">
+            <h3>{t('incomeUploadedPhotos')}</h3>
             <div className="photo-grid">
-              {uploadedPhotos.map((photo, index) => (
-                <figure key={photo.id} className="photo-item animate-slide-up" style={{ animationDelay: `${index * 50}ms` }}>
+              {uploadedPhotos.map((photo) => (
+                <figure key={photo.id} className="photo-item">
                   <img src={photo.previewUrl} alt={photo.name} />
                   <figcaption>{photo.name}</figcaption>
                 </figure>
@@ -291,11 +287,11 @@ const IncomeSource = () => {
       </div>
 
       <div className="waste-grid">
-        <div className="recent-entries-card animate-slide-in-right">
-          <h2>Recent Entries</h2>
+        <div className="recent-entries-card">
+          <h2>{t('incomeRecentEntries')}</h2>
           <ul>
-            {entries.slice(0, 3).map((item, index) => (
-              <li key={item.id} className={`animate-slide-in-left ${newEntryAdded && index === 0 ? 'highlight-new' : ''}`} style={{ animationDelay: `${index * 80}ms` }}>
+            {entries.slice(0, 3).map((item) => (
+              <li key={item.id}>
                 <span>{item.type}</span>
                 <strong>{item.weight} kg</strong>
               </li>
@@ -303,17 +299,17 @@ const IncomeSource = () => {
           </ul>
         </div>
 
-        <div className="rewards-card animate-slide-in-left">
-          <h2>Ready to unlock rewards?</h2>
+        <div className="rewards-card">
+          <h2>{t('incomeRewardsTitle')}</h2>
           <p>
-            Your rewards are dynamically calculated based on your total recycled weight.
+            {t('incomeRewardsDesc')}
           </p>
           <div className="rewards-actions">
             <Link to="/gift" className="rewards-link rewards-link-light">
-              <Gift size={16} /> View Gifts
+              <Gift size={16} /> {t('incomeViewGifts')}
             </Link>
             <Link to="/profile" className="rewards-link rewards-link-outline">
-              <LayoutDashboard size={16} /> Open Dashboard
+              <LayoutDashboard size={16} /> {t('incomeOpenDashboard')}
             </Link>
           </div>
         </div>
