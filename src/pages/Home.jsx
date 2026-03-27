@@ -1,45 +1,40 @@
 import React, { useState } from 'react';
-import { ArrowRight, Leaf, Star } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import bannerBg from '../assets/recycling_banner.png'; // Assuming I move it to assets
 import cardFallbackImage from '../assets/hero.jpg';
 import './Home.css';
 
 export default function Home() {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedCardName, setSelectedCardName] = useState('');
-  const [cardFormData, setCardFormData] = useState({
-    name: '',
-    image: '',
-    text: '',
-    details: '',
-  });
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
-  const openReadForm = (card) => {
-    setSelectedCardName(card.name);
-    setCardFormData({
-      name: card.name,
-      image: card.image,
-      text: card.text,
-      details: card.details,
-    });
-    setIsFormOpen(true);
+  const heroVideos = [
+    {
+      title: t('heroVideoStep1Title'),
+      subtitle: t('heroVideoStep1Subtitle'),
+      src: '/home-hero-video.mp4',
+    },
+    {
+      title: t('heroVideoStep2Title'),
+      subtitle: t('heroVideoStep2Subtitle'),
+      src: 'https://cdn.pixabay.com/video/2022/11/15/139214-771263162_large.mp4',
+    },
+  ];
+
+  const currentHeroVideo = heroVideos[activeVideoIndex];
+
+  const handleHeroVideoEnd = () => {
+    setActiveVideoIndex((prev) => (prev + 1) % heroVideos.length);
   };
 
-  const closeReadForm = () => {
-    setIsFormOpen(false);
-    setSelectedCardName('');
+  const handleHeroVideoError = () => {
+    setActiveVideoIndex(0);
   };
 
-  const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    setCardFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleReadMore = (categoryName) => {
+    navigate(`/category/${encodeURIComponent(categoryName)}`);
   };
 
   const categoryFallbacks = {
@@ -49,39 +44,73 @@ export default function Home() {
   };
   const homeImageCards = [
     {
-      name: 'Waste Collection',
+      key: 'Waste Collection',
+      name: t('categoryNameWasteCollection'),
       image: 'https://5.imimg.com/data5/QQ/SW/GLADMIN-36192092/waste-collection-service-500x500.png',
-      text: 'Daily mixed waste can be separated at source for better recycling results. Proper collection helps reduce landfill pressure and keeps surroundings cleaner.',
+      text: t('categoryTextWasteCollection'),
       details: 'With proper segregation of dry and wet waste, recycling efficiency improves significantly. Regular pickup and scientific disposal reduce foul smell, blocked drains, and health risks in local areas.',
     },
     {
-      name: 'Old Juta',
+      key: 'Old Juta',
+      name: t('categoryNameOldJuta'),
       image: 'https://5.imimg.com/data5/ANDROID/Default/2024/4/412093384/NE/US/XC/204967852/product-jpeg-500x500.jpg',
-      text: 'Old shoes and footwear parts can be reused or recycled with proper sorting. This prevents non-biodegradable material from being dumped openly.',
+      text: t('categoryTextOldJuta'),
       details: 'Used slippers and shoes can be separated by sole, fabric, and rubber components. This helps recovery centers recycle material better and reduces long-term landfill burden.',
     },
     {
-      name: 'Loha',
+      key: 'Loha',
+      name: t('categoryNameLoha'),
       image: 'https://tiimg.tistatic.com/fp/1/008/350/7-13-gram-per-cubic-meter-6-mm-thick-old-cast-iron-ferrous-scrap-947.jpg',
-      text: 'Iron and metal scrap can be melted and used again without quality loss. Selling loha scrap gives good returns and saves natural resources.',
+      text: t('categoryTextLoha'),
       details: 'Rusted metal items like bolts, rods, sheets, and machine parts can be collected in bulk for processing. Proper metal recycling reduces mining demand and supports energy-efficient production.',
     },
     {
-      name: 'Old cloths',
+      key: 'Old cloths',
+      name: t('categoryNameOldCloths'),
       image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRpHK6mGN5Xn8YpU07LcfZ_Djh5Oz0Np0BTsD3rEwhh1CRp5hTYzefMCe2o4arEAbGh6f2V7Gq41Abg-XyPXzcYmecqvKaatSd6UILp4RTBpijB9SaSHzdu',
-      text: 'Old clothes and fabric waste can be sorted for reuse and textile recycling. This reduces mixed garbage and helps recover useful material.',
+      text: t('categoryTextOldCloths'),
       details: 'Reusable garments can be donated, while damaged cloth can be reused in industrial cleaning, cushioning, or fiber recovery. This ensures better utilization of textile waste.',
     },
     {
-      name: 'Cosmetic Containers',
+      key: 'Cosmetic Containers',
+      name: t('categoryNameCosmeticContainers'),
       image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80',
-      text: 'Empty cosmetic bottles, tubes, and jars should be cleaned before disposal. These containers can enter specialized recycling streams safely.',
+      text: t('categoryTextCosmeticContainers'),
       details: 'Separate plastic, glass, and metal cosmetic packaging before handing it to recyclers. Clean and dry containers improve sorting quality and lower contamination in recycling plants.',
     },
   ];
 
   return (
     <div className="home-container">
+      <section className="home-hero-video-section">
+        <video
+          className="home-hero-video"
+          autoPlay
+          muted
+          playsInline
+          key={currentHeroVideo.src}
+          src={currentHeroVideo.src}
+          onEnded={handleHeroVideoEnd}
+          onError={handleHeroVideoError}
+        />
+
+        <div className="hero-video-caption">
+          <p className="hero-video-step">{currentHeroVideo.title}</p>
+          <p className="hero-video-subtext">{currentHeroVideo.subtitle}</p>
+          <div className="hero-video-dots" aria-label="Hero video steps">
+            {heroVideos.map((video, index) => (
+              <button
+                key={video.title}
+                type="button"
+                className={`hero-video-dot ${index === activeVideoIndex ? 'active' : ''}`}
+                onClick={() => setActiveVideoIndex(index)}
+                aria-label={video.title}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div className="home-page">
         <section className="welcome-hero-card">
           <div className="welcome-main">
@@ -90,8 +119,8 @@ export default function Home() {
             </h1>
 
             <h2 className="welcome-highlight">
-              Recycle Smarter.<br />
-              Earn Better Rewards.
+              {t('homeHeroLine1')}<br />
+              {t('homeHeroLine2')}
             </h2>
 
             <p className="welcome-text">
@@ -104,26 +133,26 @@ export default function Home() {
 
             <div className="welcome-actions">
               <button className="btn-primary-hero" onClick={() => navigate('/income-source')}>
-                Start Recycling <ArrowRight size={16} />
+                {t('homeStartRecycling')} <ArrowRight size={16} />
               </button>
-              <button className="btn-secondary-hero">View Dashboard</button>
+              <button className="btn-secondary-hero">{t('homeViewDashboard')}</button>
 
               <div className="welcome-topline welcome-topline-inline">
-                <span className="welcome-badge">Smart Scrap Rewards Platform</span>
+                <span className="welcome-badge">{t('homeBadgeText')}</span>
                 <span className="welcome-rating">
                   <Star size={14} />
-                  4.9 User Rating
+                  {t('homeUserRating')}
                 </span>
               </div>
             </div>
           </div>
 
           <div className="welcome-extra">
-            <h3 className="welcome-subheading">Why users love it</h3>
+            <h3 className="welcome-subheading">{t('homeWhyLoveTitle')}</h3>
             <ul className="welcome-points">
-              <li>Track household waste in seconds</li>
-              <li>Earn dynamic rewards by kg recycled</li>
-              <li>Unlock levels, eco points, and gift tiers</li>
+              <li>{t('homeWhyLovePoint1')}</li>
+              <li>{t('homeWhyLovePoint2')}</li>
+              <li>{t('homeWhyLovePoint3')}</li>
             </ul>
           </div>
 
@@ -149,44 +178,18 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── NEW BANNER SECTION ── */}
-      <section className="home-banner-section">
-        <div className="banner-card" style={{ backgroundImage: `url(${bannerBg})` }}>
-          <div className="banner-content-wrapper">
-            <div className="banner-right-content">
-              <h2 className="banner-slogan">
-                Recycle Smartly,<br/>
-                Live Green.<br/>
-                <span>Sell Your Scrap Online!</span>
-              </h2>
-            </div>
-
-            <div className="yellow-info-box">
-              <div className="info-icon-wrapper">
-                <Leaf size={28} color="#1a202c" />
-              </div>
-              <h2 className="banner-title">{t('bannerTitle')}</h2>
-              <p className="banner-text">{t('bannerDesc')}</p>
-              <button className="btn-banner-action" onClick={() => navigate('/contact')}>
-                Join Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="home-image-info-section">
         <div className="home-image-info-header">
           <h2 className="home-image-info-title">
-            <span className="home-image-info-title-typing">Smart Scrap Categories</span>
+            <span className="home-image-info-title-typing">{t('homeSmartCategoriesTitle')}</span>
           </h2>
           <p className="home-image-info-subtitle">
-            Har category ka naam diya gaya hai, aur uske niche matching image add ki gayi hai.
+            {t('homeSmartCategoriesSubtitle')}
           </p>
         </div>
 
         <div className="home-image-info-grid">
-          {homeImageCards.map((card) => {
+          {homeImageCards.slice(0, 3).map((card) => {
             return (
             <article key={card.name} className="home-image-info-card">
               <h3 className="home-image-card-name">{card.name}</h3>
@@ -197,71 +200,19 @@ export default function Home() {
                 loading="lazy"
                 onError={(event) => {
                   event.currentTarget.onerror = null;
-                  event.currentTarget.src = categoryFallbacks[card.name] || cardFallbackImage;
+                  event.currentTarget.src = categoryFallbacks[card.key] || cardFallbackImage;
                 }}
               />
               <div className="home-image-info-content">
                 <p className="home-image-card-text">{card.text}</p>
-                <button type="button" className="home-read-more-btn" onClick={() => openReadForm(card)}>
-                  Read More
+                <button type="button" className="home-read-more-btn" onClick={() => handleReadMore(card.key)}>
+                  {t('readMoreBtn')}
                 </button>
               </div>
             </article>
           );})}
         </div>
       </section>
-
-      {isFormOpen && (
-        <div className="card-form-overlay" onClick={closeReadForm}>
-          <div className="card-form-modal" onClick={(event) => event.stopPropagation()}>
-            <h3>{selectedCardName} Details Form</h3>
-
-            <form className="card-detail-form">
-              <label htmlFor="card-name">Name</label>
-              <input
-                id="card-name"
-                name="name"
-                type="text"
-                value={cardFormData.name}
-                onChange={handleFormChange}
-              />
-
-              <label htmlFor="card-image">Image</label>
-              <input
-                id="card-image"
-                name="image"
-                type="text"
-                value={cardFormData.image}
-                onChange={handleFormChange}
-              />
-
-              <label htmlFor="card-text">Text</label>
-              <textarea
-                id="card-text"
-                name="text"
-                rows="3"
-                value={cardFormData.text}
-                onChange={handleFormChange}
-              />
-
-              <label htmlFor="card-details">Details</label>
-              <textarea
-                id="card-details"
-                name="details"
-                rows="4"
-                value={cardFormData.details}
-                onChange={handleFormChange}
-              />
-            </form>
-
-            <pre className="card-json-preview">{`{\n  name: '${cardFormData.name}',\n  image: '${cardFormData.image}',\n  text: '${cardFormData.text}',\n  details: '${cardFormData.details}',\n}`}</pre>
-
-            <button type="button" className="card-form-close-btn" onClick={closeReadForm}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

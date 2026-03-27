@@ -9,6 +9,7 @@ import Gift from './pages/Gift';
 import Skill from './pages/Skill';
 import Contact from './pages/Contact';
 import Profile from './pages/Profile';
+import CategoryDetail from './pages/CategoryDetail';
 import { LanguageProvider } from './contexts/LanguageContext';
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/category/:categoryName" element={<CategoryDetail />} />
               <Route path="/income-source" element={<IncomeSource />} />
               <Route path="/gift" element={<Gift />} />
               <Route path="/skill" element={<Skill />} />

@@ -1,45 +1,48 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Recycle, Truck, Wallet, Leaf, Users, ShieldCheck } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './About.css';
 
 const About = () => {
+  const { t } = useLanguage();
+
   const highlights = [
     {
-      title: 'Smart Segregation',
-      text: 'We help households separate dry waste categories quickly so recyclable material can be recovered with less contamination.',
+      title: t('aboutSmartSegregation'),
+      text: t('aboutSmartSegDesc'),
       Icon: Recycle,
     },
     {
-      title: 'Doorstep Pickup',
-      text: 'Users can request convenient pickups and avoid local dumping points while keeping neighborhoods cleaner and safer.',
+      title: t('aboutDoorstepPickup'),
+      text: t('aboutDoorstepDesc'),
       Icon: Truck,
     },
     {
-      title: 'Instant Value Back',
-      text: 'From scrap payouts to gift rewards, KachraBeche turns everyday waste into measurable financial value.',
+      title: t('aboutInstantValue'),
+      text: t('aboutInstantValueDesc'),
       Icon: Wallet,
     },
   ];
 
   const impactStats = [
-    { label: 'Active Households', value: '10L+' },
-    { label: 'Cities Connected', value: '500+' },
-    { label: 'Waste Diverted', value: '2.4M kg+' },
-    { label: 'Rewards Delivered', value: '75K+' },
+    { label: t('aboutActiveHouseholds'), value: '10L+' },
+    { label: t('aboutCitiesConnected'), value: '500+' },
+    { label: t('aboutWasteDiverted'), value: '2.4M kg+' },
+    { label: t('aboutRewardsDelivered'), value: '75K+' },
   ];
 
   const aboutImages = [
     {
-      title: 'Doorstep Scrap Pickup',
+      title: t('aboutDoorstepScrapPickup'),
       image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=1200&q=80',
     },
     {
-      title: 'Sorted Recyclable Waste',
+      title: t('aboutSortedRecyclableWaste'),
       image: 'https://images.unsplash.com/photo-1595278069441-2cf29f8005a4?auto=format&fit=crop&w=1200&q=80',
     },
     {
-      title: 'Community Recycling Impact',
+      title: t('aboutCommunityRecyclingImpact'),
       image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80',
     },
   ];
@@ -47,18 +50,16 @@ const About = () => {
   return (
     <section className="about-page">
       <div className="about-hero">
-        <p className="about-tag">About KachraBeche</p>
-        <h1>From Scrap to Value, From Habit to Impact</h1>
+        <p className="about-tag">{t('aboutPageTitle')}</p>
+        <h1>{t('aboutHeroSubtitle')}</h1>
         <p className="about-lead">
-          KachraBeche is built to make responsible recycling simple, rewarding, and scalable for Indian households.
-          Our platform connects users, verified collectors, and recyclers in one transparent flow so every kilogram of
-          waste has a better destination than landfill.
+          {t('aboutHeroDesc')}
         </p>
 
         <div className="about-hero-badges">
-          <span><Leaf size={16} /> Cleaner Streets</span>
-          <span><Users size={16} /> Stronger Communities</span>
-          <span><ShieldCheck size={16} /> Trusted Process</span>
+          <span><Leaf size={16} /> {t('aboutBadge1')}</span>
+          <span><Users size={16} /> {t('aboutBadge2')}</span>
+          <span><ShieldCheck size={16} /> {t('aboutBadge3')}</span>
         </div>
       </div>
 
@@ -77,7 +78,7 @@ const About = () => {
       </div>
 
       <div className="about-visuals">
-        <h3>How KachraBeche Works on Ground</h3>
+        <h3>{t('aboutVisualsTitle')}</h3>
         <div className="about-visual-grid">
           {aboutImages.map((item) => (
             <figure key={item.title} className="about-visual-card">
@@ -89,7 +90,7 @@ const About = () => {
       </div>
 
       <div className="about-impact">
-        <h3>Our Impact Snapshot</h3>
+        <h3>{t('aboutImpactTitle')}</h3>
         <div className="about-impact-grid">
           {impactStats.map((item) => (
             <div key={item.label} className="about-impact-item">
@@ -101,11 +102,11 @@ const About = () => {
       </div>
 
       <div className="about-cta">
-        <h3>Ready to Start Responsible Recycling?</h3>
-        <p>Track your waste, request pickup, and unlock rewards through one simple flow.</p>
+        <h3>{t('aboutCtaTitle')}</h3>
+        <p>{t('aboutCtaDesc')}</p>
         <div className="about-cta-actions">
-          <Link to="/income-source" className="about-btn about-btn-primary">Start Waste Input</Link>
-          <Link to="/contact" className="about-btn about-btn-secondary">Talk to Our Team</Link>
+          <Link to="/income-source" className="about-btn about-btn-primary">{t('aboutCtaBtn1')}</Link>
+          <Link to="/contact" className="about-btn about-btn-secondary">{t('aboutCtaBtn2')}</Link>
         </div>
       </div>
     </section>

@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Star, Send } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Contact.css';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState('contact');
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  // Contact Form State
+  const [contactData, setContactData] = useState({
     fullName: '',
     email: '',
     phone: '',
@@ -11,30 +18,37 @@ const Contact = () => {
     message: '',
   });
 
+  // Feedback Form State
+  const [feedbackData, setFeedbackData] = useState({
+    fullName: '',
+    email: '',
+    feedbackType: 'general',
+    message: '',
+  });
+
   const [submitStatus, setSubmitStatus] = useState('');
 
-  const handleChange = (e) => {
+  // Contact Form Handlers
+  const handleContactChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setContactData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleContactSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.subject || !formData.message) {
+    if (!contactData.fullName || !contactData.email || !contactData.phone || !contactData.subject || !contactData.message) {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus(''), 3000);
       return;
     }
 
-    // Success simulation
-    console.log('Form Data:', formData);
+    console.log('Contact Form Data:', contactData);
     setSubmitStatus('success');
-    setFormData({
+    setContactData({
       fullName: '',
       email: '',
       phone: '',
@@ -45,14 +59,47 @@ const Contact = () => {
     setTimeout(() => setSubmitStatus(''), 4000);
   };
 
+  // Feedback Form Handlers
+  const handleFeedbackChange = (e) => {
+    const { name, value } = e.target;
+    setFeedbackData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleFeedbackSubmit = (e) => {
+    e.preventDefault();
+
+    if (!feedbackData.fullName || !feedbackData.email || !feedbackData.message || rating === 0) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(''), 3000);
+      return;
+    }
+
+    console.log('Feedback Form Data:', {
+      ...feedbackData,
+      rating,
+    });
+    setSubmitStatus('success');
+    setFeedbackData({
+      fullName: '',
+      email: '',
+      feedbackType: 'general',
+      message: '',
+    });
+    setRating(0);
+
+    setTimeout(() => setSubmitStatus(''), 4000);
+  };
+
   return (
     <section className="contact-page">
       {/* Header Info */}
       <div className="contact-header">
-        <h1>Contact Us</h1>
+        <h1>{t('contactTitle')}</h1>
         <p>
-          Have questions about the scrap prices, gift criteria, or bulk pickup requests? 
-          Feel free to reach out to us at any time. Our environment experts are ready to assist you.
+          {t('contactIntro')}
         </p>
 
         {/* Quick Contact Info */}
@@ -60,7 +107,7 @@ const Contact = () => {
           <div className="contact-item">
             <MapPin size={24} />
             <div>
-              <span className="contact-label">Address</span>
+              <span className="contact-label">{t('contactAddress')}</span>
               <span className="contact-value">123 Green City, Eco Valley, NG 10001</span>
             </div>
           </div>
@@ -68,7 +115,7 @@ const Contact = () => {
           <div className="contact-item">
             <Phone size={24} />
             <div>
-              <span className="contact-label">Phone</span>
+              <span className="contact-label">{t('contactPhone')}</span>
               <span className="contact-value">+91 98765 43210</span>
             </div>
           </div>
@@ -76,125 +123,266 @@ const Contact = () => {
           <div className="contact-item">
             <Mail size={24} />
             <div>
-              <span className="contact-label">Email</span>
+              <span className="contact-label">{t('contactEmail')}</span>
               <span className="contact-value">support@kachrabeche.com</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contact Form */}
+      {/* Tab Navigation */}
+      <div className="form-tabs">
+        <button 
+          className={`tab-btn ${activeTab === 'contact' ? 'active' : ''}`}
+          onClick={() => setActiveTab('contact')}
+        >
+          <Mail size={18} />
+          {t('contactSendMessage')}
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'feedback' ? 'active' : ''}`}
+          onClick={() => setActiveTab('feedback')}
+        >
+          <Send size={18} />
+          {t('feedbackTitle')}
+        </button>
+      </div>
+
+      {/* Forms Section */}
       <div className="contact-form-section">
-        <div className="form-container">
-          <h2>Send Us a Message</h2>
-          <p className="form-subtitle">Fill in the details below and we'll get back to you soon.</p>
+        {/* Contact Form */}
+        {activeTab === 'contact' && (
+          <div className="form-container">
+            <h2>{t('contactSendMessage')}</h2>
+            <p className="form-subtitle">{t('contactFormSubtitle')}</p>
 
-          <form onSubmit={handleSubmit} className="contact-form">
-            {/* Full Name */}
-            <div className="form-group">
-              <label htmlFor="fullName">Full Name *</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Your full name"
-                className="form-input"
-              />
-            </div>
-
-            {/* Email */}
-            <div className="form-group">
-              <label htmlFor="email">Email Address *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="your.email@example.com"
-                className="form-input"
-              />
-            </div>
-
-            {/* Phone */}
-            <div className="form-group">
-              <label htmlFor="phone">Phone Number *</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="+91 XXXXX XXXXX"
-                className="form-input"
-              />
-            </div>
-
-            {/* Subject */}
-            <div className="form-group">
-              <label htmlFor="subject">Subject *</label>
-              <select
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="">Select a subject</option>
-                <option value="Scrap Prices">Scrap Prices Question</option>
-                <option value="Gift Inquiry">Gift Inquiry</option>
-                <option value="Bulk Pickup">Bulk Pickup Request</option>
-                <option value="Account Issue">Account Issue</option>
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Feedback">Feedback</option>
-              </select>
-            </div>
-
-            {/* Message */}
-            <div className="form-group">
-              <label htmlFor="message">Message *</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Please tell us more about your inquiry..."
-                className="form-textarea"
-                rows="5"
-              ></textarea>
-            </div>
-
-            {/* Submit Button */}
-            <button type="submit" className="submit-btn">
-              Submit
-            </button>
-
-            {/* Status Messages */}
-            {submitStatus === 'success' && (
-              <div className="status-message success">
-                ✓ Message sent successfully! We'll get back to you soon.
+            <form onSubmit={handleContactSubmit} className="contact-form">
+              {/* Full Name */}
+              <div className="form-group">
+                <label htmlFor="fullName">{t('contactFullName')} *</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={contactData.fullName}
+                  onChange={handleContactChange}
+                  placeholder={t('contactPlaceholderName')}
+                  className="form-input"
+                />
               </div>
-            )}
-            {submitStatus === 'error' && (
-              <div className="status-message error">
-                ✕ Please fill in all required fields.
+
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="email">{t('contactFormEmail')} *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={contactData.email}
+                  onChange={handleContactChange}
+                  placeholder={t('contactPlaceholderEmail')}
+                  className="form-input"
+                />
               </div>
-            )}
-          </form>
-        </div>
+
+              {/* Phone */}
+              <div className="form-group">
+                <label htmlFor="phone">{t('contactPhone')} *</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={contactData.phone}
+                  onChange={handleContactChange}
+                  placeholder={t('contactPlaceholderPhone')}
+                  className="form-input"
+                />
+              </div>
+
+              {/* Subject */}
+              <div className="form-group">
+                <label htmlFor="subject">{t('contactMessageSubject')} *</label>
+                <select
+                  id="subject"
+                  name="subject"
+                  value={contactData.subject}
+                  onChange={handleContactChange}
+                  className="form-input"
+                >
+                  <option value="">{t('contactSubjectSelect')}</option>
+                  <option value="Scrap Prices">{t('contactSubjectScrapPrices')}</option>
+                  <option value="Gift Inquiry">{t('contactSubjectGiftInquiry')}</option>
+                  <option value="Bulk Pickup">{t('contactSubjectBulkPickup')}</option>
+                  <option value="Account Issue">{t('contactSubjectAccountIssue')}</option>
+                  <option value="General Inquiry">{t('contactSubjectGeneralInquiry')}</option>
+                </select>
+              </div>
+
+              {/* Message */}
+              <div className="form-group">
+                <label htmlFor="message">{t('contactYourMessage')} *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={contactData.message}
+                  onChange={handleContactChange}
+                  placeholder={t('contactPlaceholderMessage')}
+                  className="form-textarea"
+                  rows="5"
+                ></textarea>
+              </div>
+
+              {/* Submit Button */}
+              <button type="submit" className="submit-btn">
+                {t('contactSubmitBtn')}
+              </button>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="status-message success">
+                  ✓ {t('contactSuccessMessage')}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="status-message error">
+                  ✕ {t('contactErrorMessage')}
+                </div>
+              )}
+            </form>
+          </div>
+        )}
+
+        {/* Feedback Form */}
+        {activeTab === 'feedback' && (
+          <div className="form-container">
+            <h2>{t('feedbackFormTitle')}</h2>
+            <p className="form-subtitle">{t('feedbackFormSubtitle')}</p>
+
+            <form onSubmit={handleFeedbackSubmit} className="contact-form">
+              {/* Full Name */}
+              <div className="form-group">
+                <label htmlFor="feedbackName">{t('feedbackName')} *</label>
+                <input
+                  type="text"
+                  id="feedbackName"
+                  name="fullName"
+                  value={feedbackData.fullName}
+                  onChange={handleFeedbackChange}
+                  placeholder={t('feedbackNamePlaceholder')}
+                  className="form-input"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="feedbackEmail">{t('feedbackEmail')} *</label>
+                <input
+                  type="email"
+                  id="feedbackEmail"
+                  name="email"
+                  value={feedbackData.email}
+                  onChange={handleFeedbackChange}
+                  placeholder={t('feedbackEmailPlaceholder')}
+                  className="form-input"
+                />
+              </div>
+
+              {/* Feedback Type */}
+              <div className="form-group">
+                <label htmlFor="feedbackType">{t('feedbackType')} *</label>
+                <select
+                  id="feedbackType"
+                  name="feedbackType"
+                  value={feedbackData.feedbackType}
+                  onChange={handleFeedbackChange}
+                  className="form-input"
+                >
+                  <option value="general">{t('feedbackTypeGeneral')}</option>
+                  <option value="bug">{t('feedbackTypeBug')}</option>
+                  <option value="feature">{t('feedbackTypeFeature')}</option>
+                  <option value="improvement">{t('feedbackTypeImprovement')}</option>
+                  <option value="complaint">{t('feedbackTypeComplaint')}</option>
+                </select>
+              </div>
+
+              {/* Star Rating */}
+              <div className="form-group">
+                <label>{t('feedbackRating')} *</label>
+                <div className="star-rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      className={`star ${star <= (hoverRating || rating) ? 'active' : ''}`}
+                      onClick={() => setRating(star)}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                    >
+                      <Star
+                        size={24}
+                        fill={star <= (hoverRating || rating) ? 'currentColor' : 'none'}
+                      />
+                    </button>
+                  ))}
+                </div>
+                {rating > 0 && (
+                  <span className="rating-text">
+                    {rating === 1 && t('feedbackRatingPoor')}
+                    {rating === 2 && t('feedbackRatingAverage')}
+                    {rating === 3 && t('feedbackRatingGood')}
+                    {rating === 4 && t('feedbackRatingVeryGood')}
+                    {rating === 5 && t('feedbackRatingExcellent')}
+                  </span>
+                )}
+              </div>
+
+              {/* Message */}
+              <div className="form-group">
+                <label htmlFor="feedbackMessage">{t('feedbackMessage')} *</label>
+                <textarea
+                  id="feedbackMessage"
+                  name="message"
+                  value={feedbackData.message}
+                  onChange={handleFeedbackChange}
+                  placeholder={t('feedbackMessagePlaceholder')}
+                  className="form-textarea"
+                  rows="5"
+                ></textarea>
+                <span className="char-count">
+                  {feedbackData.message.length}/500
+                </span>
+              </div>
+
+              {/* Submit Button */}
+              <button type="submit" className="submit-btn">
+                {t('feedbackSubmitBtn')}
+              </button>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="status-message success">
+                  ✓ {t('feedbackSuccessMessage')}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="status-message error">
+                  ✕ {t('feedbackErrorMessage')}
+                </div>
+              )}
+            </form>
+          </div>
+        )}
 
         {/* Form Image/Illustration (Optional) */}
         <div className="form-side-visual">
           <div className="visual-card">
-            <h3>Why Contact Us?</h3>
+            <h3>{t('contactWhyTitle')}</h3>
             <ul className="benefits-list">
-              <li>💰 Get instant prices for your scrap</li>
-              <li>🎁 Know which gifts you can unlock</li>
-              <li>🚚 Schedule bulk pickups</li>
-              <li>🤝 Expert guidance on recycling</li>
-              <li>🌍 Contribute to a sustainable future</li>
+              <li>{t('contactBenefit1')}</li>
+              <li>{t('contactBenefit2')}</li>
+              <li>{t('contactBenefit3')}</li>
+              <li>{t('contactBenefit4')}</li>
+              <li>{t('contactBenefit5')}</li>
             </ul>
           </div>
         </div>

@@ -161,6 +161,13 @@
   font-weight: 600;
 }
 
+.waste-success {
+  margin-top: 10px;
+  color: #2e7d32;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .uploaded-photos {
   margin-top: 16px;
 }
