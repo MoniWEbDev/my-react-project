@@ -1,0 +1,345 @@
+.talent-gallery-page {
+  min-height: 75vh;
+  padding: 2rem 1rem 4rem;
+  background: radial-gradient(circle at 15% 10%, #edf9ff 0%, #f8fff6 40%, #ffffff 100%);
+}
+
+.talent-gallery-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.talent-gallery-header p:first-child {
+  margin: 0;
+  color: #0d7a46;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.talent-gallery-header h1 {
+  margin: 0.5rem 0;
+  color: #102a43;
+}
+
+.talent-gallery-header p {
+  color: #486581;
+  max-width: 760px;
+}
+
+.talent-gallery-note {
+  margin-top: 0.5rem;
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.waste-filter-panel {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid #bfd9cc;
+  background: linear-gradient(135deg, #f3fff8 0%, #eef7ff 100%);
+}
+
+.waste-filter-head h2 {
+  margin: 0;
+  color: #113a5c;
+}
+
+.waste-filter-head p {
+  margin: 0.35rem 0 0;
+  color: #486581;
+}
+
+.waste-filter-input-row {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.waste-filter-input-row label {
+  color: #102a43;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.waste-filter-input-row input {
+  max-width: 240px;
+  border: 1px solid #b7c8d8;
+  border-radius: 10px;
+  padding: 0.68rem 0.75rem;
+  color: #1f2937;
+  font-size: 0.95rem;
+  background: #ffffff;
+}
+
+.waste-filter-hint {
+  margin: 0.65rem 0 0;
+  color: #1f6f4a;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.talent-gallery-block {
+  margin-top: 1.4rem;
+}
+
+.talent-gallery-head h2 {
+  margin: 0;
+  color: #102a43;
+}
+
+.talent-gallery-head p {
+  margin: 0.35rem 0 0;
+  color: #486581;
+}
+
+.talent-gallery-empty {
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  border: 1px dashed #9fb3c8;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.talent-gallery-empty h2 {
+  margin: 0;
+  color: #102a43;
+  font-size: 1.05rem;
+}
+
+.talent-gallery-empty p {
+  margin: 0.45rem 0 0;
+  color: #627d98;
+}
+
+.talent-grid {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.talent-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #dbe8f4;
+  background: #fff;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.talent-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 34px rgba(15, 23, 42, 0.14);
+}
+
+.talent-card.eligible {
+  border: 2px solid #4ac47b;
+}
+
+.talent-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.talent-card-body {
+  padding: 0.9rem;
+}
+
+.talent-card-body h3 {
+  margin: 0;
+  color: #102a43;
+}
+
+.talent-skill-title {
+  margin: 0;
+  color: #102a43;
+  font-size: 1.02rem;
+}
+
+.talent-priority-row {
+  margin-top: 0.4rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.talent-price-highlight {
+  display: inline-block;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.28rem 0.64rem;
+  background: #dff7e8;
+  color: #0b6b3e;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.talent-contact-highlight {
+  color: #334e68;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.talent-meta {
+  margin: 0.35rem 0;
+  color: #486581;
+  font-size: 0.9rem;
+}
+
+.talent-desc {
+  margin: 0.45rem 0 0.55rem;
+  color: #3b5b75;
+  line-height: 1.45;
+}
+
+.talent-category {
+  margin: 0.3rem 0 0;
+  color: #0d7a46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.talent-contact {
+  margin: 0 0 0.5rem;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.talent-level {
+  margin: 0;
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  background: #e8f5ed;
+  color: #0d7a46;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.redeem-badge {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  border-radius: 999px;
+  padding: 0.26rem 0.55rem;
+  background: #e9fff0;
+  color: #0d7a46;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.talent-chip-row {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.talent-card-body p {
+  color: #334e68;
+  line-height: 1.45;
+}
+
+.talent-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.talent-contact-row {
+  margin-top: 0.2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.talent-action-btn {
+  border: 1px solid #0d7a46;
+  background: #ffffff;
+  color: #0d7a46;
+  border-radius: 8px;
+  padding: 0.38rem 0.68rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.talent-action-btn.save {
+  background: #0d7a46;
+  color: #ffffff;
+}
+
+.talent-action-btn.ghost {
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+.talent-action-btn.danger {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.talent-action-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.talent-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.talent-edit-form input,
+.talent-edit-form textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  color: #334155;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.talent-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.talent-card-body a {
+  display: inline-block;
+  margin-top: 0.45rem;
+  color: #0d7a46;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .talent-gallery-page {
+    padding: 1.3rem 0.85rem 3rem;
+  }
+
+  .waste-filter-input-row input {
+    max-width: 100%;
+  }
+
+  .talent-edit-grid {
+    grid-template-columns: 1fr;
+  }
+}

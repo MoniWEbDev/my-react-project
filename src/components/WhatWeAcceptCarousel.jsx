@@ -11,62 +11,62 @@ const wasteItems = [
 	{
 		name: 'Cans',
 		image:
-			'https://images.pexels.com/photos/802221/pexels-photo-802221.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/cans.jpg',
 	},
 	{
 		name: 'Water Bottles',
 		image:
-			'https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/water-bottles.jpg',
 	},
 	{
 		name: 'Bottle Caps',
 		image:
-			'https://images.pexels.com/photos/1202672/pexels-photo-1202672.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/bottle-caps.jpg',
 	},
 	{
 		name: 'Plastics',
 		image:
-			'https://images.pexels.com/photos/9324334/pexels-photo-9324334.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/plastics.jpg',
 	},
 	{
 		name: 'Wrappers',
 		image:
-			'https://images.pexels.com/photos/6995247/pexels-photo-6995247.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/wrappers.jpg',
 	},
 	{
 		name: 'Metals',
 		image:
-			'https://images.pexels.com/photos/159309/scrap-metal-waste-garbage-159309.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/metals.jpg',
 	},
 	{
 		name: 'Electronics (E-waste)',
 		image:
-			'https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/electronics.jpg',
 	},
 	{
 		name: 'Cardboards',
 		image:
-			'https://images.pexels.com/photos/236705/pexels-photo-236705.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/cardboards.jpg',
 	},
 	{
 		name: 'Paper',
 		image:
-			'https://images.pexels.com/photos/4498134/pexels-photo-4498134.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/paper.jpg',
 	},
 	{
 		name: 'Woods',
 		image:
-			'https://images.pexels.com/photos/3637785/pexels-photo-3637785.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/woods.jpg',
 	},
 	{
 		name: 'Cosmetic Pouches',
 		image:
-			'https://images.pexels.com/photos/2533266/pexels-photo-2533266.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/cosmetic-pouches.jpg',
 	},
 	{
 		name: 'Glass',
 		image:
-			'https://images.pexels.com/photos/802218/pexels-photo-802218.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop',
+			'/images/glass.jpg',
 	},
 ];
 

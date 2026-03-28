@@ -112,7 +112,7 @@ export default function Home() {
           playsInline
           preload="auto"
         >
-          <source src="/videos/recycling.mp4?v=20260327-0142" type="video/mp4" />
+          <source src="/videos/home-hero.mp4?v=20260328-1007" type="video/mp4" />
         </video>
 
         <div className="home-hero-overlay" aria-hidden="true" />

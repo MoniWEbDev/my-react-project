@@ -12,8 +12,8 @@
   --gift-accent-strong: #f57c00;
   --gift-success: #1d8f5f;
   max-width: 1240px;
-  margin: 82px auto 0;
-  padding: 0 40px 40px;
+  margin: 102px auto 0;
+  padding: 14px 40px 40px;
   display: flex;
   flex-direction: column;
   gap: 18px;

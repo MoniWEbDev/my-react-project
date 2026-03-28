@@ -3,14 +3,25 @@ import { Eye, EyeOff } from 'lucide-react';
 import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '../firebase';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import './Profile.css';
 
 const Profile = () => {
   const { language } = useLanguage();
+  const {
+    user,
+    login: loginUser,
+    logout,
+  } = useAuth();
   const COPY = {
     en: {
       login: 'Login',
       signup: 'Signup',
+      accountTitle: 'Profile',
+      accountSubtitle: 'Manage your account details and access permissions.',
+      signedInAs: 'Signed in as',
+      roleLabel: 'Role',
+      logout: 'Logout',
       subtitle: 'Continue to track waste pickups and claim rewards.',
       name: 'Name',
       email: 'Email',
@@ -41,10 +52,18 @@ const Profile = () => {
       googleSuccess: 'Google login successful.',
       googleFailed: 'Google login failed. Please try again.',
       switchTabs: 'Login and signup switch',
+      userType: 'User Type',
+      normalUser: 'Normal User',
+      adminUser: 'Admin',
     },
     hi: {
       login: 'लॉगिन',
       signup: 'साइनअप',
+      accountTitle: 'प्रोफाइल',
+      accountSubtitle: 'अपनी अकाउंट जानकारी और अनुमति यहां देखें।',
+      signedInAs: 'लॉगिन यूज़र',
+      roleLabel: 'भूमिका',
+      logout: 'लॉगआउट',
       subtitle: 'वेस्ट पिकअप ट्रैक करें और रिवॉर्ड क्लेम करें।',
       name: 'नाम',
       email: 'ईमेल',
@@ -75,9 +94,175 @@ const Profile = () => {
       googleSuccess: 'Google लॉगिन सफल।',
       googleFailed: 'Google लॉगिन विफल। कृपया फिर प्रयास करें।',
       switchTabs: 'लॉगिन और साइनअप स्विच',
+      userType: 'उपयोगकर्ता प्रकार',
+      normalUser: 'सामान्य उपयोगकर्ता',
+      adminUser: 'एडमिन',
+    },
+    mr: {
+      login: 'लॉगिन',
+      signup: 'साइनअप',
+      accountTitle: 'प्रोफाइल',
+      accountSubtitle: 'तुमचे खाते तपशील आणि परवानग्या येथे पाहा.',
+      signedInAs: 'लॉगिन वापरकर्ता',
+      roleLabel: 'भूमिका',
+      logout: 'लॉगआउट',
+      subtitle: 'कचरा पिकअप ट्रॅक करा आणि रिवॉर्ड क्लेम करा.',
+      name: 'नाव',
+      email: 'ईमेल',
+      password: 'पासवर्ड',
+      createPassword: 'पासवर्ड तयार करा',
+      confirmPassword: 'पासवर्ड पुष्टी करा',
+      showPassword: 'पासवर्ड दाखवा',
+      hidePassword: 'पासवर्ड लपवा',
+      showConfirmPassword: 'पुष्टी पासवर्ड दाखवा',
+      hideConfirmPassword: 'पुष्टी पासवर्ड लपवा',
+      pleaseWait: 'कृपया थांबा...',
+      newHere: 'नवीन आहात? ',
+      alreadyAccount: 'आधीच खाते आहे? ',
+      createOne: 'नवे तयार करा',
+      or: 'किंवा',
+      openingGoogle: 'Google उघडत आहे...',
+      loginGoogle: 'Google ने लॉगिन',
+      requiredFields: 'कृपया सर्व आवश्यक फील्ड भरा.',
+      invalidEmail: 'कृपया वैध ईमेल पत्ता टाका.',
+      shortPassword: 'पासवर्ड किमान 6 अक्षरांचा असावा.',
+      confirmRequired: 'कृपया पासवर्ड पुष्टी करा.',
+      mismatch: 'पासवर्ड आणि पुष्टी पासवर्ड जुळत नाहीत.',
+      requestFailed: 'विनंती अयशस्वी. पुन्हा प्रयत्न करा.',
+      loginSuccess: 'लॉगिन यशस्वी.',
+      signupSuccess: 'साइनअप यशस्वी.',
+      connectError: 'सर्व्हरशी कनेक्ट होता आले नाही. बॅकएंड चालू आहे का तपासा.',
+      googleNotConfigured: 'Google लॉगिन अजून कॉन्फिगर नाही.',
+      googleSuccess: 'Google लॉगिन यशस्वी.',
+      googleFailed: 'Google लॉगिन अयशस्वी. पुन्हा प्रयत्न करा.',
+      switchTabs: 'लॉगिन आणि साइनअप स्विच',
+      userType: 'वापरकर्ता प्रकार',
+      normalUser: 'सामान्य वापरकर्ता',
+      adminUser: 'अॅडमिन',
+    },
+    ur: {
+      login: 'لاگ ان',
+      signup: 'سائن اپ',
+      accountTitle: 'پروفائل',
+      accountSubtitle: 'اپنے اکاؤنٹ کی تفصیل اور اجازتیں یہاں دیکھیں۔',
+      signedInAs: 'لاگ ان صارف',
+      roleLabel: 'کردار',
+      logout: 'لاگ آؤٹ',
+      subtitle: 'ویسٹ پک اپ ٹریک کریں اور ریوارڈ کلیم کریں۔',
+      name: 'نام',
+      email: 'ای میل',
+      password: 'پاس ورڈ',
+      createPassword: 'پاس ورڈ بنائیں',
+      confirmPassword: 'پاس ورڈ کی تصدیق کریں',
+      showPassword: 'پاس ورڈ دکھائیں',
+      hidePassword: 'پاس ورڈ چھپائیں',
+      showConfirmPassword: 'تصدیقی پاس ورڈ دکھائیں',
+      hideConfirmPassword: 'تصدیقی پاس ورڈ چھپائیں',
+      pleaseWait: 'براہ کرم انتظار کریں...',
+      newHere: 'نئے ہیں؟ ',
+      alreadyAccount: 'پہلے سے اکاؤنٹ ہے؟ ',
+      createOne: 'نیا بنائیں',
+      or: 'یا',
+      openingGoogle: 'Google کھل رہا ہے...',
+      loginGoogle: 'Google سے لاگ ان',
+      requiredFields: 'براہ کرم تمام ضروری فیلڈز بھریں۔',
+      invalidEmail: 'براہ کرم درست ای میل درج کریں۔',
+      shortPassword: 'پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے۔',
+      confirmRequired: 'براہ کرم پاس ورڈ کی تصدیق کریں۔',
+      mismatch: 'پاس ورڈ اور تصدیقی پاس ورڈ مماثل نہیں۔',
+      requestFailed: 'درخواست ناکام ہوئی۔ دوبارہ کوشش کریں۔',
+      loginSuccess: 'لاگ ان کامیاب۔',
+      signupSuccess: 'سائن اپ کامیاب۔',
+      connectError: 'سرور سے رابطہ نہیں ہو سکا۔ بیک اینڈ چل رہا ہے یا نہیں چیک کریں۔',
+      googleNotConfigured: 'Google لاگ ان ابھی کنفیگر نہیں ہے۔',
+      googleSuccess: 'Google لاگ ان کامیاب۔',
+      googleFailed: 'Google لاگ ان ناکام۔ دوبارہ کوشش کریں۔',
+      switchTabs: 'لاگ ان اور سائن اپ سوئچ',
+      userType: 'صارف کی قسم',
+      normalUser: 'عام صارف',
+      adminUser: 'ایڈمن',
+    },
+    bn: {
+      login: 'লগইন',
+      signup: 'সাইনআপ',
+      accountTitle: 'প্রোফাইল',
+      accountSubtitle: 'আপনার অ্যাকাউন্টের তথ্য ও অনুমতি এখানে দেখুন।',
+      signedInAs: 'লগইন ইউজার',
+      roleLabel: 'ভূমিকা',
+      logout: 'লগআউট',
+      subtitle: 'বর্জ্য পিকআপ ট্র্যাক করুন এবং রিওয়ার্ড ক্লেইম করুন।',
+      name: 'নাম',
+      email: 'ইমেল',
+      password: 'পাসওয়ার্ড',
+      createPassword: 'পাসওয়ার্ড তৈরি করুন',
+      confirmPassword: 'পাসওয়ার্ড নিশ্চিত করুন',
+      showPassword: 'পাসওয়ার্ড দেখান',
+      hidePassword: 'পাসওয়ার্ড লুকান',
+      showConfirmPassword: 'নিশ্চিত পাসওয়ার্ড দেখান',
+      hideConfirmPassword: 'নিশ্চিত পাসওয়ার্ড লুকান',
+      pleaseWait: 'অনুগ্রহ করে অপেক্ষা করুন...',
+      newHere: 'নতুন এখানে? ',
+      alreadyAccount: 'আগেই অ্যাকাউন্ট আছে? ',
+      createOne: 'নতুন তৈরি করুন',
+      or: 'অথবা',
+      openingGoogle: 'Google খুলছে...',
+      loginGoogle: 'Google দিয়ে লগইন',
+      requiredFields: 'অনুগ্রহ করে সব প্রয়োজনীয় ফিল্ড পূরণ করুন।',
+      invalidEmail: 'অনুগ্রহ করে সঠিক ইমেল লিখুন।',
+      shortPassword: 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।',
+      confirmRequired: 'অনুগ্রহ করে পাসওয়ার্ড নিশ্চিত করুন।',
+      mismatch: 'পাসওয়ার্ড ও নিশ্চিত পাসওয়ার্ড মেলেনি।',
+      requestFailed: 'অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।',
+      loginSuccess: 'লগইন সফল।',
+      signupSuccess: 'সাইনআপ সফল।',
+      connectError: 'সার্ভারে সংযোগ করা যায়নি। ব্যাকএন্ড চলছে কিনা দেখুন।',
+      googleNotConfigured: 'Google লগইন এখনও কনফিগার করা হয়নি।',
+      googleSuccess: 'Google লগইন সফল।',
+      googleFailed: 'Google লগইন ব্যর্থ। আবার চেষ্টা করুন।',
+      switchTabs: 'লগইন ও সাইনআপ সুইচ',
+      userType: 'ব্যবহারকারীর ধরন',
+      normalUser: 'সাধারণ ব্যবহারকারী',
+      adminUser: 'অ্যাডমিন',
     },
   };
-  const copy = COPY[language] || COPY.hi;
+  const copy = COPY[language] || COPY.en;
+
+  if (user) {
+    return (
+      <section className="auth-page">
+        <div className="auth-card account-card">
+          <div className="auth-header">
+            <h1>{copy.accountTitle}</h1>
+            <p>{copy.accountSubtitle}</p>
+          </div>
+
+          <div className="account-info-grid">
+            <div className="account-info-row">
+              <span>{copy.name}</span>
+              <strong>{user.name || 'N/A'}</strong>
+            </div>
+            <div className="account-info-row">
+              <span>{copy.email}</span>
+              <strong>{user.email || 'N/A'}</strong>
+            </div>
+            <div className="account-info-row">
+              <span>{copy.roleLabel}</span>
+              <strong>{user.role === 'admin' ? copy.adminUser : copy.normalUser}</strong>
+            </div>
+          </div>
+
+          <p className="account-signed-in-text">
+            {copy.signedInAs}: <b>{user.email || user.name || 'N/A'}</b>
+          </p>
+
+          <button type="button" className="auth-submit-btn account-logout-btn" onClick={logout}>
+            {copy.logout}
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   const [mode, setMode] = useState('login');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -86,6 +271,7 @@ const Profile = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'user',
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -151,6 +337,7 @@ const Profile = () => {
               name: formData.name.trim(),
               email: formData.email.trim(),
               password: formData.password,
+              role: formData.role,
             };
 
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -166,6 +353,10 @@ const Profile = () => {
       if (!response.ok) {
         setError(data?.message || copy.requestFailed);
         return;
+      }
+
+      if (data?.user) {
+        loginUser(data.user);
       }
 
       setMessage(data?.message || (mode === 'login' ? copy.loginSuccess : copy.signupSuccess));
@@ -185,6 +376,7 @@ const Profile = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      role: 'user',
     });
   };
 
@@ -211,7 +403,14 @@ const Profile = () => {
         ...prev,
         name: user.displayName || prev.name,
         email: user.email || prev.email,
+        role: 'user',
       }));
+
+      loginUser({
+        name: user.displayName || '',
+        email: user.email || '',
+        role: 'user',
+      });
 
       setMessage(copy.googleSuccess);
     } catch (authError) {
@@ -292,6 +491,23 @@ const Profile = () => {
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
+
+          {mode === 'signup' && (
+            <label htmlFor="auth-role" className="sr-only">{copy.userType}</label>
+          )}
+
+          {mode === 'signup' && (
+            <select
+              id="auth-role"
+              name="role"
+              value={formData.role}
+              onChange={handleInputChange}
+              className="auth-input"
+            >
+              <option value="user">{copy.normalUser}</option>
+              <option value="admin">{copy.adminUser}</option>
+            </select>
+          )}
 
           {mode === 'signup' && (
             <div className="auth-password-wrap">
