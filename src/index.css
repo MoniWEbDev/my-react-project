@@ -19,6 +19,13 @@
   --nav-active-text: #92400e;
   --toggle-bg: #fffaf0;
   --toggle-text: #7c4608;
+  --app-bg: #f7fafc;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f8fbff;
+  --app-border: #dbe5ef;
+  --app-text-primary: #1f2937;
+  --app-text-secondary: #64748b;
+  --app-input-bg: #ffffff;
 }
 
 :root[data-theme='dark'] {
@@ -34,6 +41,19 @@
   --nav-active-text: #fcd34d;
   --toggle-bg: #1f2937;
   --toggle-text: #f3f4f6;
+  --app-bg: #0b1220;
+  --app-surface: #111a2b;
+  --app-surface-soft: #182338;
+  --app-border: #2a3a53;
+  --app-text-primary: #e5edf8;
+  --app-text-secondary: #9cb0cb;
+  --app-input-bg: #0f1727;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 * {
@@ -44,11 +64,15 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  color: var(--text-dark);
-  background-color: var(--bg-light);
+  color: var(--app-text-primary);
+  background-color: var(--app-bg);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+#root {
+  background: var(--app-bg);
 }
 
 a {
@@ -67,11 +91,14 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--app-bg);
+  color: var(--app-text-primary);
 }
 
 main {
   flex: 1;
   padding-top: 70px; /* Space for fixed navbar */
+  background: var(--app-bg);
 }
 
 /* Common Section Styles */

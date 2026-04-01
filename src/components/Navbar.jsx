@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ChevronDown,
   LogOut,
@@ -13,12 +13,15 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/useTheme';
 
-const Navbar = ({ theme, toggleTheme }) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
   const profileMenuRef = useRef(null);
 
   const navbarCopyByLanguage = {
@@ -97,7 +100,7 @@ const Navbar = ({ theme, toggleTheme }) => {
 
   const navItems = useMemo(
     () => [
-      { to: '/', label: t('home') },
+      { to: '/', label: t('home'), end: true },
       { to: '/about', label: t('about') },
       { to: '/income-source', label: t('yourContribution') },
       { to: '/gift', label: t('incentives') },
@@ -109,6 +112,28 @@ const Navbar = ({ theme, toggleTheme }) => {
     ],
     [language, user]
   );
+
+  const normalizePath = (path) => {
+    if (path.length > 1 && path.endsWith('/')) {
+      return path.slice(0, -1);
+    }
+    return path;
+  };
+
+  const isRouteActive = (to, end = false) => {
+    const currentPath = normalizePath(location.pathname);
+    const targetPath = normalizePath(to);
+
+    if (targetPath === '/') {
+      return currentPath === '/';
+    }
+
+    if (end) {
+      return currentPath === targetPath;
+    }
+
+    return currentPath === targetPath || currentPath.startsWith(`${targetPath}/`);
+  };
 
   const brandByLanguage = {
     en: 'KachraBeche',
@@ -157,9 +182,14 @@ const Navbar = ({ theme, toggleTheme }) => {
         <ul className="nav-links">
           {navItems.map((item) => (
             <li key={item.to}>
-              <NavLink to={item.to} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} onClick={closeMenu}>
+              <Link
+                to={item.to}
+                className={`nav-link ${isRouteActive(item.to, item.end) ? 'active' : ''}`}
+                aria-current={isRouteActive(item.to, item.end) ? 'page' : undefined}
+                onClick={closeMenu}
+              >
                 {item.label}
-              </NavLink>
+              </Link>
             </li>
           ))}
         </ul>

@@ -1,7 +1,7 @@
 .talent-gallery-page {
   min-height: 75vh;
   padding: 2rem 1rem 4rem;
-  background: radial-gradient(circle at 15% 10%, #edf9ff 0%, #f8fff6 40%, #ffffff 100%);
+  background: radial-gradient(circle at 15% 10%, var(--app-surface-soft) 0%, var(--app-bg) 45%, var(--app-bg) 100%);
 }
 
 .talent-gallery-container {
@@ -20,11 +20,11 @@
 
 .talent-gallery-header h1 {
   margin: 0.5rem 0;
-  color: #102a43;
+  color: var(--app-text-primary);
 }
 
 .talent-gallery-header p {
-  color: #486581;
+  color: var(--app-text-secondary);
   max-width: 760px;
 }
 
@@ -104,20 +104,20 @@
 .talent-gallery-empty {
   margin-top: 1.2rem;
   border-radius: 14px;
-  border: 1px dashed #9fb3c8;
+  border: 1px dashed var(--app-border);
   padding: 1rem;
-  background: #ffffff;
+  background: var(--app-surface);
 }
 
 .talent-gallery-empty h2 {
   margin: 0;
-  color: #102a43;
+  color: var(--app-text-primary);
   font-size: 1.05rem;
 }
 
 .talent-gallery-empty p {
   margin: 0.45rem 0 0;
-  color: #627d98;
+  color: var(--app-text-secondary);
 }
 
 .talent-grid {
@@ -130,8 +130,8 @@
 .talent-card {
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #dbe8f4;
-  background: #fff;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
   box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
